@@ -1,2 +1,6 @@
 crewai 
 crewai-tools
+streamlit
+Pillow
+opencv-python
+pytesseract
