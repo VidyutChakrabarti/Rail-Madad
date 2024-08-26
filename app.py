@@ -25,4 +25,4 @@ elif page == "Complaint Lodger":
         if(len(complaint)>0):
             inputs = {"complaint": complaint, "departments": departments}
             crew_output = crew.kickoff(inputs = inputs)
-            print(crew_output.raw)
+            st.write(crew_output.raw)

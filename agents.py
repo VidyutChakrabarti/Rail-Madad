@@ -12,7 +12,7 @@ from crewai_tools import (
 )
 
 codingtool = CodeInterpreterTool()
-
+datetool = getCurrentDate
 
 class Main_agents():
     def complaint_analysis_agent(self):
@@ -70,7 +70,7 @@ class Main_agents():
         "Make sure to address all the issues provided in the context and assure how the department is working on them."
         "Also make sure to include an expected time of hearing back based on the priority level assigned."
 		"Be friendly and supportive and write your responses within 200 words."
-		"Make sure to provide full complete answers, and make no assumptions. Replace [Date] with current date."
+		"Make sure to provide full complete answers, and make no assumptions."
             ),
             verbose=True,
             max_iter=10,
@@ -88,18 +88,17 @@ class Main_agents():
                 "the support representative is "
                 "providing the best support possible.\n"
                 "You need to make sure that the support representative "
-                "is providing full, complete answers within 200 words and makes no assumptions. "
+                "is providing full, complete answers within 250 words strictly and makes no assumptions. "
                 "Secondly, make sure the subject for the letter is personalized with extracted information from the complaint. "
-                "If no personalization is possible then provide a generic subject. "
-                "Output your response as a formal letter written that can be mailed immediately. "
-                "and ensure there are no placeholders."
+                "If no personalization is possible then provide a generic subject. Thridly, ensure current date is mentioned. "
+                "Output your response as a formal letter written that can be mailed immediately."
             ),
-            allow_code_execution = True,
+            allow_code_execution = False,
             verbose=True,
             max_iter=10,
             llm=gemini_model,
-            tool = [], 
-            allow_delegation=False
+            tools = [datetool], 
+            allow_delegation=True
         )
  
     

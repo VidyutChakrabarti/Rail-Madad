@@ -93,12 +93,12 @@ class Main_Tasks():
         "A final, detailed, and informative response "
         "ready to be mailed to the customer.\n"
         "This response should fully address the "
-        "customer's issues within 200 words, incorporating all "
+        "customer's issues within 250 words strictly, incorporating all "
         "relevant feedback and improvements. "
         "Ensure that the final answer is written like a formal letter from a prestigious brand (Indian Railways)."
         """Example output: 
-        [Date]
         Dear Sir/Madam,
+        Date: 12/08/2004,
         Subject: Response to the complaint lodged regarding your journey on train number 99783 dated dd/mm/yyyy. 
         We sincerely apologize for the inconvenience you experienced during your recent journey with Indian Railways. Your feedback is invaluable, and we are committed to addressing the issues promptly.
         Coach Cleanliness & Washroom Conditions: We are enhancing our cleaning protocols and training staff to ensure better cleanliness within two weeks.
@@ -110,8 +110,8 @@ class Main_Tasks():
         Yours sincerely,
 
         Rail-Madad AI-Assistant, 
-        Commercial Department
-        Indian Railways"""
+        Commercial Department,
+        Indian Railways."""
         ), 
         async_execution=False, 
         agent=agent, 

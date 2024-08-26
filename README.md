@@ -9,3 +9,7 @@ pip install -r requirements.txt
 ```bash
 streamlit run app.py
 ```
+#### in local environment in .env assign: 
+GEMINI_MODEL_NAME=gemini-1.5-flash
+GEMINI_API_KEY="your api key"
+step by step guide to obtain free api-key: [Get API key](https://www.linkedin.com/pulse/step-by-step-guide-using-google-gemini-free-api-calls-image-text-y3noc/)
