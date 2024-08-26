@@ -7,5 +7,5 @@ pip install -r requirements.txt
 ```
 ### To see the minimal User interface run: 
 ```bash
-streamlit run main.py
+streamlit run app.py
 ```

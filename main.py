@@ -1,28 +1,33 @@
-from crewai import Crew, Process
 from agents import Main_agents, Helper_agents
-from langchain_openai import ChatOpenAI
-import streamlit as st 
+from tasks import Main_Tasks, Sub_tasks
 from PIL import Image
+from crewai import Crew, Process
 
-st.set_page_config(layout="wide")
+main_agents = Main_agents()
+main_tasks = Main_Tasks()
+sub_agents = Helper_agents()
+sub_tasks = Sub_tasks() 
 
-pages = ["Home", "LiveChat","Complaint Lodger"]
-page = st.sidebar.selectbox("Menu", pages)
+#initializing agents 
+complaint_analyzer = main_agents.complaint_analysis_agent()
+department_router = main_agents.department_routing_agent()
+scheduler = main_agents.scheduler()
+writer = main_agents.support_agent()
+editor = main_agents.support_quality_assurance_agent()
 
-if page == "Home":
-    st.title("Welcome to Rail Madad.")
-    st.write("1. Go to LiveChat to chat with our custom model.")
-    st.write("2. Visit Complaint lodger to file a complaint.")
+# image_describer = sub_agents.image_analysis_agent()
+# metadata_extractor = sub_agents.meta_data_extractor()
+# video_analyzer = sub_agents.video_analyser()
 
-elif page == "LiveChat":
-    st.title("Chatting interface")
-    st.write("Fine tuned agent will have tools such as the serper tool to allow real time access to train timings and Railway information.")
+#initializing tasks
+complaintAnalysis = main_tasks.extract_main_issues(complaint_analyzer)
+routing = main_tasks.categorize_into_departments(department_router, [complaintAnalysis])
+scheduling = main_tasks.schedule(scheduler, [complaintAnalysis, routing])
+respond = main_tasks.write_response(writer, [complaintAnalysis, routing, scheduling])
+proof_read = main_tasks.proof_read(editor, [respond])
 
-elif page == "Complaint Lodger":
-    st.header("Submit your complaint here.")
-    with st.form(key='complaint_form', clear_on_submit=True): 
-        complaint = st.text_area("Enter your message here:").strip() 
-        uploaded_image = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
-        submit = st.form_submit_button(label='Submit') 
-    if submit: 
-        st.success("Your complaint has been successfully submitted.")
+crew = Crew(
+                agents = [complaint_analyzer, department_router, scheduler, writer, editor], 
+                tasks = [complaintAnalysis, routing, scheduling, respond, proof_read]
+            )
+

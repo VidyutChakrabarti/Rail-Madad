@@ -1,6 +1,7 @@
-crewai 
-crewai-tools
-streamlit
-Pillow
-opencv-python
-pytesseract
+crewai==0.51.1
+crewai_tools==0.8.3
+langchain==0.2.14
+langchain_google_genai==1.0.10
+Pillow==10.4.0
+python-dotenv==1.0.1
+streamlit==1.37.1
