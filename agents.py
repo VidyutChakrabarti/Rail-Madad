@@ -90,7 +90,7 @@ class Main_agents():
                 "You need to make sure that the support representative "
                 "is providing full, complete answers within 250 words strictly and makes no assumptions. "
                 "Secondly, make sure the subject for the letter is personalized with extracted information from the complaint. "
-                "If no personalization is possible then provide a generic subject. Thridly, ensure current date is mentioned. "
+                "If no personalization is possible then provide a generic subject. Thirdly, ensure current date is mentioned. "
                 "Output your response as a formal letter written that can be mailed immediately."
             ),
             allow_code_execution = False,
@@ -128,6 +128,25 @@ class Helper_agents():
             llm=gemini_model,
         )
     
-    
+from tools import getTrainStatus
 
-
+class Main_agents():
+    def support_agent(self):
+        return Agent(
+            role="Senior Support Representative",
+	        goal="Be the most friendly and helpful support representative in your team",
+            backstory=(
+                "You work at the Indian Railways, more specifically in the department assigned in the context. "
+                "You are tasked with providing support to a customer who has filed a complaint. "
+                "Make sure to address all the issues provided in the context and assure how the department is working on them. "
+                "If the customer inquires about train status, provide real-time data from the train status API."
+                "Also, include the expected time of hearing back based on the priority level assigned."
+		        "Be friendly and supportive and write your responses within 200 words."
+		        "Make sure to provide full complete answers, and make no assumptions."
+            ),
+            verbose=True,
+            max_iter=10,
+            llm=gemini_model,
+            tools=[getTrainStatus],
+            allow_delegation=False
+        )
