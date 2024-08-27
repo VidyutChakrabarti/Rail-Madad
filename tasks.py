@@ -117,6 +117,24 @@ class Main_Tasks():
         agent=agent, 
         context=context
        )
+    def chatting(self, agent):
+       return Task(
+        description = ("A user is chatting with you. "
+        "You are a professional supporting agent who gives reposnses taking into account the historical context of the chat "
+        "and also keeping your responses to the point and brief.\nPrompt: {prompt}\n History: {history}"              
+        ), 
+        expected_output = ("Short to the point answers are needed. But you must also provide complete and professional responses that answer all queries within the prompt taking into account the history."
+        """Example output:
+        Rajdhani Express Reviews:
+        Overall Rating: Generally positive, with a rating of 4.3/5 based on 2668 reviews1.
+        Pros: Punctuality, cleanliness, and service are often praised1.
+        Cons: Some passengers have reported issues with food quality and cleanliness in certain coaches1.
+        Ticket Price from Nagpur to Bangalore:
+        Rajdhani Express (22692): Approximately ₹2896 for 3A, ₹1860 for 3A (Tatkal), ₹2600 for 2A, and ₹1480 for Sleeper (Tatkal).
+        Is there anything else you need help with? """), 
+        agent=agent,
+        async_execution=False 
+       )
 
 class Sub_tasks(): 
    def image_analysis_task(self, agent, image_path):
@@ -147,5 +165,8 @@ class Sub_tasks():
         image_path=image_path,
         agent=agent
     )
+   
+
+
 
 
