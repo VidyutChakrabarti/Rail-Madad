@@ -23,5 +23,5 @@ def plotter():
             all_issues += ast.literal_eval(item['issues'])
         return all_issues
     else: 
-        return []
+        return ['Train Delay']
 
