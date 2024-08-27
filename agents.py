@@ -36,7 +36,7 @@ class Main_agents():
             goal='Classify the complaint to the most appropriate department.',
             backstory="""You are an expert in analyzing railway related complaints and determining the best department to handle them. 
             Your task is to thoroughly analyze the list of issues provided and assign it to a department that can handle the most amount of issues.
-            Consider the nature of the complaint, the specific issues mentioned, and the expertise of each department.
+            Consider the nature of the complaint, the specific issues mentioned, and the expertise of each department that are present in the dicitionary 'Departments'.
             """,
             verbose=True,
             max_iter=15,
@@ -126,6 +126,21 @@ class Helper_agents():
     def meta_data_extractor(self):
         return Agent(
             llm=gemini_model,
+        )
+
+class ChatAgents(): 
+    def chatagent(self): 
+        return Agent(
+            role = 'Chat Assitant', 
+            goal = 'Provide the user with very specific information about his/her latest prompt.', 
+            backstory = """You are an expert in analyzing the prompt made by an user and giving 
+            a very specific reply that answers every query within the prompt in a very professional and brief manner.
+            Firstly, Your repsonses must not exceed 70 words. Secondly, you must take into account the history of chats 
+            provided to generate the latest response.
+            Thridly, simply respond 'Sorry for the inconvenience but I can only answer Indian railways related questions.' if you feel the prompt is not related to railways.""", 
+            max_iter=10,
+            llm=gemini_model,
+            allow_delegation=False
         )
     
     
