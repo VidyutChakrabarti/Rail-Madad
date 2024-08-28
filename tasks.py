@@ -135,7 +135,7 @@ class Main_Tasks():
         agent=agent,
         async_execution=False 
        )
-
+    
 class Sub_tasks(): 
    def image_analysis_task(self, agent, image_path):
     return Task(

@@ -4,9 +4,10 @@ from main import crew, chatcrew
 from helperfunctions import *
 import plotly.express as px
 from collections import Counter
+
 st.set_page_config(layout="wide")
 pages = ["Home", "LiveChat","Complaint Lodger"]
-page = st.sidebar.selectbox("Menu", pages)
+page = st.sidebar.selectbox("Menu", pages, help="Navigate using this pane.")
 
 with open("style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True) 
@@ -15,9 +16,15 @@ if 'messages' not in st.session_state:
     st.session_state['messages'] = [{"role": "assistant", "content": "Hi👋, How may I help you?"}]
 
 if page == "Home":
+    st.sidebar.markdown("\n\n\n")
+    st.sidebar.image("raillogo.png")
+    st.sidebar.markdown("\n\n\n")
+    st.sidebar.write("For data analytics we provide you with dynamic plots based on insights extracted from complaints we received.")
+    st.sidebar.write("1. Go to LiveChat to chat with our custom model.")
+    st.sidebar.write("2. Visit Complaint lodger to file a complaint.")
     st.markdown('<h1 class="gradient-text">Welcome to Rail Madad</h1>', unsafe_allow_html=True)
-    st.write("1. Go to LiveChat to chat with our custom model.")
-    st.write("2. Visit Complaint lodger to file a complaint.")
+    st.markdown("<hr class='gradient-line' />", unsafe_allow_html=True)
+
     all_issues = plotter()
     issue_counts = Counter(all_issues)
     labels, values = zip(*issue_counts.items())
@@ -31,6 +38,12 @@ if page == "Home":
         
 
 elif page == "LiveChat":
+    st.sidebar.markdown("\n\n\n")
+    st.markdown('<h1 class="gradient-text">Rail Madad AI Assitant</h1>', unsafe_allow_html=True)
+    st.markdown("<hr class='gradient-line' />", unsafe_allow_html=True)
+    st.sidebar.image("aibot.png")
+    st.sidebar.markdown("\n\n\n")
+    st.sidebar.write("Namaste 🙏, I am the Rail madad AI chatbot. Ask me any questions about Indian Railways and i will give you real time info for all of them. Thank you.")
     for msg in st.session_state['messages']: 
          with st.chat_message(msg["role"]):
               st.write(msg["content"]) 
@@ -50,7 +63,11 @@ elif page == "LiveChat":
         
 
 elif page == "Complaint Lodger":
-    st.header("Submit your complaint here.")
+    st.sidebar.markdown("\n\n\n")
+    st.sidebar.image("complaint_agent.png")
+    st.sidebar.markdown("\n\n\n")
+    st.sidebar.write("Namaste 🙏, We are a group of AI agents operating on behalf of Indian Railways. Kindly, register your complaint here, we will route your issues to the correct authority and get back to you as soon as possible. Thank you.")
+    st.header("Complaint Filing")
     with st.form(key='complaint_form', clear_on_submit=True):
         c1, c2 = st.columns([1,2]) 
         with c1: 
@@ -66,6 +83,6 @@ elif page == "Complaint Lodger":
             inputs = {"complaint": complaint, "departments": departments}
             crew_output = crew.kickoff(inputs = inputs)
             st.write(crew_output.raw)
-            log = {'train_number': str(train_number), 'date': str(date), 'issues': crew_output.tasks_output[0].raw.strip("```json\n").strip("\n```").replace("\"", "'").replace("\\", "")}
+            log = {'train_number': str(train_number), 'date': str(date), 'issues': crew_output.tasks_output[0].raw.strip("```json\n").strip("\n```").replace("\"", "'").replace("\\", "").replace("\n", "")}
             logger(log)
         

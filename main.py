@@ -16,6 +16,7 @@ scheduler = main_agents.scheduler()
 writer = main_agents.support_agent()
 editor = main_agents.support_quality_assurance_agent()
 chatter = chat_agent.chatagent()
+#jsoninterpreter = chat_agent.json_interpreter() 
 # image_describer = sub_agents.image_analysis_agent()
 # metadata_extractor = sub_agents.meta_data_extractor()
 # video_analyzer = sub_agents.video_analyser()
@@ -27,6 +28,7 @@ scheduling = main_tasks.schedule(scheduler, [complaintAnalysis, routing])
 respond = main_tasks.write_response(writer, [complaintAnalysis, routing, scheduling])
 proof_read = main_tasks.proof_read(editor, [respond])
 livechat = main_tasks.chatting(chatter)
+#jsonextraction = main_tasks.extract_from_json(jsoninterpreter)
 
 crew = Crew(
                 agents = [complaint_analyzer, department_router, scheduler, writer, editor], 

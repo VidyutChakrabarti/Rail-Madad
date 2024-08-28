@@ -1,5 +1,6 @@
 from crewai import Agent
 from tools import *
+
 import os
 from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
@@ -137,10 +138,13 @@ class ChatAgents():
             a very specific reply that answers every query within the prompt in a very professional and brief manner.
             Firstly, Your repsonses must not exceed 70 words. Secondly, you must take into account the history of chats 
             provided to generate the latest response.
-            Thridly, simply respond 'Sorry for the inconvenience but I can only answer Indian railways related questions.' if you feel the prompt is not related to railways.""", 
+            Lastly, simply respond 'Sorry for the inconvenience but I can only answer Indian railways related questions.' if you feel the prompt is not related to railways. 
+            """, 
             max_iter=10,
             llm=gemini_model,
-            allow_delegation=False
+            verbose = True, 
+            tools = [],
+            allow_delegation=True
         )
     
     
