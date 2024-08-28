@@ -138,12 +138,13 @@ class ChatAgents():
             a very specific reply that answers every query within the prompt in a very professional and brief manner.
             Firstly, Your repsonses must not exceed 70 words. Secondly, you must take into account the history of chats 
             provided to generate the latest response.
+            Thirdly, don't use tools too much, if tool fails just respond 'Unable to fetch needed data.'.
             Lastly, simply respond 'Sorry for the inconvenience but I can only answer Indian railways related questions.' if you feel the prompt is not related to railways. 
             """, 
             max_iter=10,
             llm=gemini_model,
             verbose = True, 
-            tools = [],
+            tools = [getTrainStatus, getStationInfo, search_internet],
             allow_delegation=True
         )
     
