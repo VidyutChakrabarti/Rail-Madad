@@ -2,6 +2,7 @@ from agents import Main_agents, Helper_agents, ChatAgents
 from tasks import Main_Tasks, Sub_tasks
 from PIL import Image
 from crewai import Crew, Process
+from agents import gemini_model
 
 main_agents = Main_agents()
 main_tasks = Main_Tasks()
@@ -16,6 +17,7 @@ scheduler = main_agents.scheduler()
 writer = main_agents.support_agent()
 editor = main_agents.support_quality_assurance_agent()
 chatter = chat_agent.chatagent()
+#searcher = chat_agent.Searchagent()
 #jsoninterpreter = chat_agent.json_interpreter() 
 # image_describer = sub_agents.image_analysis_agent()
 # metadata_extractor = sub_agents.meta_data_extractor()
@@ -28,6 +30,7 @@ scheduling = main_tasks.schedule(scheduler, [complaintAnalysis, routing])
 respond = main_tasks.write_response(writer, [complaintAnalysis, routing, scheduling])
 proof_read = main_tasks.proof_read(editor, [respond])
 livechat = main_tasks.chatting(chatter)
+#searching = sub_tasks.search_internet(searcher)
 #jsonextraction = main_tasks.extract_from_json(jsoninterpreter)
 
 crew = Crew(

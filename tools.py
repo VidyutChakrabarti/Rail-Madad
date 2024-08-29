@@ -3,9 +3,24 @@ from datetime import date
 import http.client
 import json
 import os
+import requests
 from dotenv import load_dotenv
 load_dotenv()
 rapid_api_key = os.getenv('RAPID_API_KEY')
+
+def fetching(): 
+    conn = http.client.HTTPSConnection("indian-railway-irctc.p.rapidapi.com")
+    headers = {
+        'x-rapidapi-key': rapid_api_key,
+        'x-rapidapi-host': "indian-railway-irctc.p.rapidapi.com",
+        'x-rapid-api': "rapid-api-database"
+    }
+    conn.request("GET", "/api/trains/v1/train/status?departure_date=20240827&isH5=true&client=web&train_number=11040", headers=headers)
+    res = conn.getresponse()
+    data = res.read()
+    json_data = json.loads(data.decode("utf-8"))
+    print(json_data)
+    return json_data
 
 @tool("Get current date")
 def getCurrentDate():
@@ -14,103 +29,49 @@ def getCurrentDate():
     d = today.strftime("%d/%m/%Y")
     return d
 
-conn = http.client.HTTPSConnection("indian-railway-irctc.p.rapidapi.com")
-headers = {
-    'x-rapidapi-key': rapid_api_key,
-    'x-rapidapi-host': "indian-railway-irctc.p.rapidapi.com",
-    'x-rapid-api': "rapid-api-database"
-}
+@tool("Get train status")
+def getTrainStatus(train_number):
+    """Fetch the real-time status of a specific train."""
+    json_data = fetching()
+    return f"status: {json_data['body']['train_status_message']}, Current_station: {json_data['body']['current_station']}"
 
-conn.request("GET", "/api/trains/v1/train/status?departure_date=20240827&isH5=true&client=web&train_number=11040", headers=headers)
-res = conn.getresponse()
-data = res.read()
-json_data = json.loads(data.decode("utf-8"))
-# print(json_data)
 
-@tool("GetArrivalTime")
-def getArrivalTime(train_status):
-    try:
-        arrival_time = train_status['body']['stations'][0]['arrivalTime']
-        return arrival_time
-    except KeyError:
-        return "Data not available"
+@tool("Get station information")
+def getStationInfo(train_number, station_code):
+    """Fetch information related to a specific station/stop of a train."""
+    json_data = fetching()
+    for item in json_data['body']['stations']: 
+        if(item['stationCode'] == station_code): 
+            return item 
+    
+    return "Train doesn't stop at the station specified."
 
-@tool("GetDepartureTime")
-def getDepartureTime(train_status):
-    try:
-        departure_time = train_status['body']['stations'][0]['departureTime']
-        return departure_time
-    except KeyError:
-        return "Data not available"
 
-@tool("GetDistance")
-def getDistance(train_status):
-    try:
-        distance = train_status['body']['stations'][0]['distance']
-        return distance
-    except KeyError:
-        return "Data not available"
+@tool("Search the internet")
+def search_internet(query):
+    """Useful to search the internet about a a given topic and return relevant results"""
+    top_result_to_return = 5
+    url = "https://google.serper.dev/search"
+    payload = json.dumps(
+        {"q": query['title'], "num": top_result_to_return, "gl": "in"})
+    headers = {
+        'X-API-KEY': os.environ['SERPER_API_KEY'],
+        'content-type': 'application/json'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    if 'organic' not in response.json():
+        return "Sorry, I couldn't find anything about that, there could be an error with you serper api key."
+    else:
+        results = response.json()['organic']
+        string = []
+        print(results)
+        for result in results[:top_result_to_return]:
+            try:
+                string.append(' '.join([
+                    f"Title: {result['title']}",
+                    f"Snippet: {result['snippet']}",
+                ]))
+            except KeyError:
+                next
 
-@tool("GetHaltTime")
-def getHaltTime(train_status):
-    try:
-        halt_time = train_status['body']['stations'][0]['haltTime']
-        return halt_time
-    except KeyError:
-        return "Data not available"
-
-@tool("GetStationName")
-def getStationName(train_status):
-    try:
-        station_name = train_status['body']['stations'][0]['stationName']
-        return station_name
-    except KeyError:
-        return "Data not available"
-
-@tool("GetStnSerialNumber")
-def getStnSerialNumber(train_status):
-    try:
-        stn_serial_number = train_status['body']['stations'][0]['stnSerialNumber']
-        return stn_serial_number
-    except KeyError:
-        return "Data not available"
-
-@tool("GetActualArrivalDate")
-def getActualArrivalDate(train_status):
-    try:
-        actual_arrival_date = train_status['body']['stations'][0]['actual_arrival_date']
-        return actual_arrival_date
-    except KeyError:
-        return "Data not available"
-
-@tool("GetActualArrivalTime")
-def getActualArrivalTime(train_status):
-    try:
-        actual_arrival_time = train_status['body']['stations'][0]['actual_arrival_time']
-        return actual_arrival_time
-    except KeyError:
-        return "Data not available"
-
-@tool("GetActualDepartureDate")
-def getActualDepartureDate(train_status):
-    try:
-        actual_departure_date = train_status['body']['stations'][0]['actual_departure_date']
-        return actual_departure_date
-    except KeyError:
-        return "Data not available"
-
-@tool("GetActualDepartureTime")
-def getActualDepartureTime(train_status):
-    try:
-        actual_departure_time = train_status['body']['stations'][0]['actual_departure_time']
-        return actual_departure_time
-    except KeyError:
-        return "Data not available"
-
-@tool("GetExpectedPlatform")
-def getExpectedPlatform(train_status):
-    try:
-        expected_platform = train_status['body']['stations'][0]['expected_platform']
-        return expected_platform
-    except KeyError:
-        return "Data not available"
+        return '\n'.join(string)

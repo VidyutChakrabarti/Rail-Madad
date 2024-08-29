@@ -121,7 +121,7 @@ class Main_Tasks():
        return Task(
         description = ("A user is chatting with you. "
         "You are a professional supporting agent who gives reposnses taking into account the historical context of the chat "
-        "and also keeping your responses to the point and brief.\nPrompt: {prompt}\n History: {history}"              
+        "and also keeping your responses to the point and brief, optimize and plan the use of tools to make minimum calls before execution.\nPrompt: {prompt}\n History: {history}"              
         ), 
         expected_output = ("Short to the point answers are needed. But you must also provide complete and professional responses that answer all queries within the prompt taking into account the history."
         """Example output:
@@ -166,7 +166,6 @@ class Sub_tasks():
         agent=agent
     )
    
-
 
 
 
