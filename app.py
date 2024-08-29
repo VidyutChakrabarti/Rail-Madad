@@ -53,7 +53,7 @@ elif page == "LiveChat":
         with st.chat_message("user"):
             st.write(prompt)
 
-        inputs = {'prompt': prompt,'history': st.session_state['messages']} 
+        inputs = {'prompt': prompt} 
         response = chatcrew.kickoff(inputs = inputs)
 
         st.session_state['messages'].append({"role":"user","content": prompt})
