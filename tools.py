@@ -64,7 +64,6 @@ def search_internet(query):
     else:
         results = response.json()['organic']
         string = []
-        print(results)
         for result in results[:top_result_to_return]:
             try:
                 string.append(' '.join([
