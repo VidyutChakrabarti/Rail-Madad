@@ -2,7 +2,7 @@
     {
         "train_number": "12345",
         "date": "2024-08-09",
-        "issues": "['Train Delay', 'Coach Cleanliness', 'Air Conditioning Issues', 'Food Quality', 'Staff Behavior', 'Train Speed and Ride Quality', 'Announcements', 'Seat Comfort', 'Train Maintenance', 'Lighting Issues']"
+        "issues": "['Train Delay', 'Coach Cleanliness', 'Air Conditioning Issues', 'Food Quality', 'Staff Behavior', 'Announcements', 'Seat Comfort', 'Train Maintenance', 'Lighting Issues']"
     },
     {
         "train_number": "85392",
@@ -12,11 +12,16 @@
     {
         "train_number": "85392",
         "date": "2024-08-06",
-        "issues": "['Train Delay', 'Coach Cleanliness', 'Air Conditioning Issues', 'Food Quality', 'Staff Behavior', 'Train Speed and Ride Quality', 'Announcements', 'Seat Comfort', 'Train Maintenance', 'Lighting Issues']"
+        "issues": "['Train Delay', 'Coach Cleanliness', 'Air Conditioning Issues', 'Food Quality', 'Staff Behavior', 'Announcements', 'Seat Comfort', 'Train Maintenance', 'Lighting Issues']"
     },
     {
         "train_number": "12345",
         "date": "2024-08-28",
-        "issues": "['Train Delay', 'Coach Cleanliness', 'Air Conditioning Malfunction', 'Food Quality', 'Staff Behavior', 'Train Speed', 'Announcements', 'Seat Comfort', 'Train Maintenance', 'Lighting']"
+        "issues": "['Train Delay', 'Coach Cleanliness', 'Air Conditioning Malfunction', 'Food Quality', 'Staff Behavior', 'Train Speed', 'Seat Comfort', 'Train Maintenance', 'Lighting']"
+    },
+    {
+        "train_number": "12345",
+        "date": "2024-08-30",
+        "issues": "['Lack of Medical Facilities']"
     }
 ]

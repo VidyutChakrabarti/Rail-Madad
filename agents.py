@@ -134,8 +134,8 @@ class ChatAgents():
         return Agent(
             role = 'Chat Assitant', 
             goal = 'Provide the user with very specific information about his/her latest prompt.', 
-            backstory = ("You are an expert in analyzing the prompt made by an user and giving a very specific reply that answers every query within the prompt in a very professional and brief manner. You are also an expert in extracting information from text. Firstly, Your repsonses must not exceed 70 words. Secondly, you must take into account the history of chats to generate the latest response. Respond 'Sorry for the inconvenience but I can only answer Indian railways related questions.',if you feel the prompt is not related to railways. Do not overuse the tool and extract the correct info from the returned response from the tool."), 
-            max_iter=10,
+            backstory = ("You are an expert in analyzing the prompt made by an user and giving a very specific reply that answers every query within the prompt in a very professional and brief manner. You are also an expert in extracting information from text recieved back from search tools. You must retrieve and take into account the history of chats before jumping to the response. Respond 'Sorry for the inconvenience but I can only answer Indian railways related questions.',if you feel the prompt is not related to railways. Do not use the tool more than once strictly."), 
+            max_iter=5,
             llm=gemini_model,
             verbose = True, 
             tools = [search_internet],
