@@ -1,7 +1,7 @@
-import os 
+import os
 import json
 import ast
-
+import streamlit as st
 file_path = 'log_file.json'
 
 def logger(log):
@@ -14,14 +14,19 @@ def logger(log):
     with open(file_path, 'w') as file:
         json.dump(my_list, file, indent=4)
 
-def plotter(): 
+def plotter(train_number=None):
     if os.path.exists(file_path):
         with open(file_path, 'r') as file:
-            l = json.load(file)
-        all_issues = ['Train Delay']
-        for item in l: 
-            all_issues += ast.literal_eval(item['issues'])
+            logs = json.load(file)
+        all_issues = []
+        for item in logs:
+            if train_number is None or item['train_number'] == train_number:
+                all_issues += ast.literal_eval(item['issues'])
+        if(len(all_issues) == 0):
+            for item in logs:
+                all_issues += ast.literal_eval(item['issues'])
+            print("No trains found.")
+            st.warning("No trains found.")
         return all_issues
-    else: 
+    else:
         return ['Train Delay']
-
