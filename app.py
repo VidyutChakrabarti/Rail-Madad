@@ -1,7 +1,7 @@
 import streamlit as st
 from vars import *
 from main import crew, chatcrew 
-from helperfunctions import plotter
+from helperfunctions import *
 import plotly.express as px
 from collections import Counter
 
