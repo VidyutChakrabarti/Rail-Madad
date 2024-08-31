@@ -23,11 +23,10 @@ if page == "Home":
     st.sidebar.write("1. Go to LiveChat to chat with our custom model.")
     st.sidebar.write("2. Visit Complaint lodger to file a complaint.")
     st.markdown('<h1 class="gradient-text">Welcome to Rail Madad</h1>', unsafe_allow_html=True)
-    st.markdown("<hr class='gradient-line' />", unsafe_allow_html=True)
-    
+    st.markdown("<hr class='gradient-line' />", unsafe_allow_html=True)  
+
     st.write("Filter by Train Number:")
-    train_number_input = st.text_input("Enter Train Number to Filter", '')
-    
+    train_number_input = st.text_input("Enter Train Number to Filter", '')   
     all_issues = plotter(train_number_input if train_number_input else None)
     
     issue_counts = Counter(all_issues)
@@ -39,8 +38,8 @@ if page == "Home":
                  color_discrete_sequence=px.colors.qualitative.Vivid)
     fig.update_layout(xaxis_tickangle=-45)
     st.plotly_chart(fig)
+    
 
-        
 elif page == "LiveChat":
     st.sidebar.markdown("\n\n\n")
     st.markdown('<h1 class="gradient-text">Rail Madad AI Assitant</h1>', unsafe_allow_html=True)
@@ -71,22 +70,42 @@ elif page == "Complaint Lodger":
     st.sidebar.image("complaint_agent.png")
     st.sidebar.markdown("\n\n\n")
     st.sidebar.write("Namaste 🙏, We are a group of AI agents operating on behalf of Indian Railways. Kindly, register your complaint here, we will route your issues to the correct authority and get back to you as soon as possible. Thank you.")
-    st.header("Complaint Filing")
-    with st.form(key='complaint_form', clear_on_submit=True):
-        c1, c2 = st.columns([1,2]) 
+    st.markdown('<h2 class="gradient-text">File Your Grievance</h2>', unsafe_allow_html=True)
+    
+    with st.form(key='complaint_form'):
+        c1, c2 = st.columns([1,2])
         with c1: 
-            train_number = st.text_input('Train Number')
+            train_number = st.text_input('Train Number *')
         with c2: 
-            date = st.date_input('Date')
-        complaint = st.text_area("Enter your message here:").strip() 
-        uploaded_image = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
-        submit = st.form_submit_button(label='Submit') 
-    if submit: 
-        st.success("Your complaint has been successfully submitted.")
-        if(len(complaint)>0):
-            inputs = {"complaint": complaint, "departments": departments}
-            crew_output = crew.kickoff(inputs = inputs)
-            st.write(crew_output.raw)
-            log = {'train_number': str(train_number), 'date': str(date), 'issues': crew_output.tasks_output[0].raw.strip("```json\n").strip("\n```").replace("\"", "'").replace("\\", "").replace("\n", "")}
-            logger(log)
+            date = st.date_input('Date *')
         
+        st.text_input('Email')
+        journey_details, pnr_no = st.columns([1, 1])
+        with journey_details:
+            st.selectbox('Journey Details', ['PNR','Seat number', 'Station Code'])
+        with pnr_no:
+            st.text_input('PNR No')
+        
+        type_, subtype = st.columns([1, 1])
+        with type_:
+            st.selectbox('Type', ['--Select--', 'Issue Type 1', 'Issue Type 2'])
+        with subtype:
+            st.selectbox('Sub Type', ['--Select--', 'Sub Type 1', 'Sub Type 2'])
+        
+        upload_file = st.file_uploader("Upload File", type=["jpg", "jpeg", "png", "pdf"], help='Select your file')
+        
+        complaint = st.text_area("Grievance Description *").strip()
+        
+        submit_button = st.form_submit_button(label='Submit')
+        if submit_button:
+            st.success("Your complaint has been successfully submitted.")
+            if len(complaint) > 0:
+                inputs = {"complaint": complaint, "departments": departments}
+                crew_output = crew.kickoff(inputs = inputs)
+                st.write(crew_output.raw)
+                log = {
+                    'train_number': str(train_number),
+                    'date': str(date),
+                    'issues': crew_output.tasks_output[0].raw.strip("```json\n").strip("```").replace("\"", "'").replace("\\", "").replace("\n", "")
+                }
+                logger(log)

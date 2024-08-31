@@ -4,6 +4,8 @@ import http.client
 import json
 import os
 import requests
+import wikipediaapi
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from dotenv import load_dotenv
 load_dotenv()
 rapid_api_key = os.getenv('RAPID_API_KEY')
@@ -19,7 +21,7 @@ def fetching():
     res = conn.getresponse()
     data = res.read()
     json_data = json.loads(data.decode("utf-8"))
-    print(json_data)
+    #print(json_data)
     return json_data
 
 @tool("Get current date")
@@ -64,6 +66,7 @@ def search_internet(query):
     else:
         results = response.json()['organic']
         string = []
+        print(results)
         for result in results[:top_result_to_return]:
             try:
                 string.append(' '.join([
@@ -74,3 +77,41 @@ def search_internet(query):
                 next
 
         return '\n'.join(string)
+    
+@tool("Wikipedia Tool")
+def get_wikipedia_summary(page_title):
+    """Fetch the summary of a Wikipedia page."""
+    wiki_wiki = wikipediaapi.Wikipedia('en') 
+    page = wiki_wiki.page(page_title)
+    if page.exists():
+        return page.summary
+    else:
+        return "Page not found."
+
+def analyze_sentiment(text):
+    analyzer = SentimentIntensityAnalyzer()
+    sentiment = analyzer.polarity_scores(text)
+    if sentiment['compound'] > 0:
+        sentiment_label = 'Positive'
+    elif sentiment['compound'] < 0:
+        sentiment_label = 'Negative'
+    else:
+        sentiment_label = 'Neutral'
+    
+    return sentiment_label, sentiment['compound']
+
+@tool("Get department contact information")
+def get_department_contact(department_name):
+    """Retrieve contact information for a specific department."""
+
+    contacts = {
+        "Customer Service": "customer.service@railways.com",
+        "Technical Support": "tech.support@railways.com",
+        "Maintenance": "maintenance@railways.com"
+    }
+    return contacts.get(department_name, "Department not found.")
+
+
+
+
+

@@ -2,7 +2,6 @@ from agents import Main_agents, Helper_agents, ChatAgents
 from tasks import Main_Tasks, Sub_tasks
 from PIL import Image
 from crewai import Crew, Process
-from agents import gemini_model
 
 main_agents = Main_agents()
 main_tasks = Main_Tasks()
