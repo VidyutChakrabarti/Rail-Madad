@@ -1,16 +1,16 @@
 import streamlit as st
 from vars import *
 from main import crew, chatcrew 
-from helperfunctions import *
+from helperfunctions import plotter
 import plotly.express as px
 from collections import Counter
 
 st.set_page_config(layout="wide")
-pages = ["Home", "LiveChat","Complaint Lodger"]
+pages = ["Home", "LiveChat", "Complaint Lodger"]
 page = st.sidebar.selectbox("Menu", pages, help="Navigate using this pane.")
 
 with open("style.css") as f:
-    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True) 
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 if 'messages' not in st.session_state:
     st.session_state['messages'] = [{"role": "assistant", "content": "Hi👋, How may I help you?"}]
@@ -24,19 +24,23 @@ if page == "Home":
     st.sidebar.write("2. Visit Complaint lodger to file a complaint.")
     st.markdown('<h1 class="gradient-text">Welcome to Rail Madad</h1>', unsafe_allow_html=True)
     st.markdown("<hr class='gradient-line' />", unsafe_allow_html=True)
-
-    all_issues = plotter()
+    
+    st.write("Filter by Train Number:")
+    train_number_input = st.text_input("Enter Train Number to Filter", '')
+    
+    all_issues = plotter(train_number_input if train_number_input else None)
+    
     issue_counts = Counter(all_issues)
     labels, values = zip(*issue_counts.items())
     data = {'Issues': labels, 'Count': values}
     fig = px.bar(data, x='Issues', y='Count', title='Frequency of Issues', 
-             labels={'Issues': 'Issues', 'Count': 'Count'},
-             color='Issues', 
-             color_discrete_sequence=px.colors.qualitative.Vivid)
+                 labels={'Issues': 'Issues', 'Count': 'Count'},
+                 color='Issues', 
+                 color_discrete_sequence=px.colors.qualitative.Vivid)
     fig.update_layout(xaxis_tickangle=-45)
     st.plotly_chart(fig)
-        
 
+        
 elif page == "LiveChat":
     st.sidebar.markdown("\n\n\n")
     st.markdown('<h1 class="gradient-text">Rail Madad AI Assitant</h1>', unsafe_allow_html=True)
