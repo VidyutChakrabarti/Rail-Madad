@@ -4,7 +4,7 @@ langchain==0.2.15
 langchain_google_genai==1.0.10
 Pillow==10.4.0
 plotly==5.23.0
-python-dotenv==1.0.1
+toml
 Requests==2.32.3
 streamlit==1.37.1
 vaderSentiment==3.3.2

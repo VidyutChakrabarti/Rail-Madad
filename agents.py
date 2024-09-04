@@ -1,12 +1,11 @@
 from crewai import Agent
 from tools import *
 
-import os
 from langchain_google_genai import GoogleGenerativeAI
-from dotenv import load_dotenv
-load_dotenv()
-gemini_api_key = os.getenv('GEMINI_API_KEY')
-gemini_model_name = os.getenv('GEMINI_MODEL_NAME')
+import toml
+config = toml.load('config.toml')
+gemini_api_key = config['api_keys']['GEMINI_API_KEY']
+gemini_model_name = config['model']['GEMINI_MODEL_NAME']
 gemini_model = GoogleGenerativeAI(model=gemini_model_name, google_api_key=gemini_api_key)
 from crewai_tools import (
    CodeInterpreterTool
