@@ -37,4 +37,5 @@ crew = Crew(
 chatcrew = Crew(
     agents=[chatter], 
     tasks = [livechat],
+    memory=False 
 )
