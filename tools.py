@@ -3,12 +3,13 @@ from datetime import date
 import http.client
 import json
 import toml
+import streamlit as st
 import requests
 import wikipediaapi
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-config = toml.load('config.toml')
-rapid_api_key = config['api_keys']['RAPID_API_KEY']
+#config = toml.load('config.toml')
+rapid_api_key = st.secrets['api_keys']['RAPID_API_KEY']
 
 def fetching(): 
     conn = http.client.HTTPSConnection("indian-railway-irctc.p.rapidapi.com")
@@ -57,7 +58,7 @@ def search_internet(query):
     payload = json.dumps(
         {"q": query['title'], "num": top_result_to_return, "gl": "in"})
     headers = {
-        'X-API-KEY': config['api_keys']['SERPER_API_KEY'],
+        'X-API-KEY': st.secrets['api_keys']['SERPER_API_KEY'],
         'content-type': 'application/json'
     }
     response = requests.request("POST", url, headers=headers, data=payload)
