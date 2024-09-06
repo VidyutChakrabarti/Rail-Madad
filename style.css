@@ -1,5 +1,6 @@
 /* style.css */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
 @keyframes gradient-move {
     0% {
@@ -34,8 +35,36 @@
 }
 
 .block-container {
-    padding-top: 2rem;
+    padding-top: 3rem;
     padding-bottom: 0rem;
-    padding-left: 5rem;
-    padding-right: 5rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+
+.card {
+    background-color: rgb(151, 87, 248);
+    padding: 15px;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    height: 250px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 2px solid white;
+    font-family: "Playfair Display", serif;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.issues {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

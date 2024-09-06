@@ -2,13 +2,12 @@ from langchain.tools import tool
 from datetime import date
 import http.client
 import json
-import toml
 import streamlit as st
 import requests
 import wikipediaapi
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-#config = toml.load('config.toml')
+
 rapid_api_key = st.secrets['api_keys']['RAPID_API_KEY']
 
 def fetching(): 

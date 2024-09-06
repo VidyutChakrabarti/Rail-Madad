@@ -2,8 +2,7 @@ from crewai import Agent
 from tools import *
 import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
-import toml
-# config = toml.load('config.toml')
+
 gemini_api_key = st.secrets['api_keys']['GEMINI_API_KEY']
 gemini_model_name = st.secrets['model']['GEMINI_MODEL_NAME']
 gemini_model = GoogleGenerativeAI(model=gemini_model_name, google_api_key=gemini_api_key)

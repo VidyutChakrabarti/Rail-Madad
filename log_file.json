@@ -1,17 +1,56 @@
 [
     {
         "train_number": "12345",
-        "date": "2024-08-09",
-        "issues": "['Train Delay', 'Coach Cleanliness', 'Air Conditioning Issues', 'Food Quality', 'Staff Behavior', 'Announcements', 'Seat Comfort', 'Train Maintenance', 'Lighting Issues']"
+        "date_of_problem": "2024-09-24",
+        "complaint_registered": "06/09/2024",
+        "cno": "621893105",
+        "mail": "eva@gmail.com",
+        "department": "Medical",
+        "issues": "['Lack of Medical Supplies', 'Inadequate Staff Response', 'Emergency Preparedness']"
     },
     {
-        "train_number": "85392",
-        "date": "2024-08-14",
-        "issues": "['Medical aid unavailable', 'Bed linen comfort']"
+        "train_number": "32905",
+        "date_of_problem": "2024-09-03",
+        "complaint_registered": "06/09/2024",
+        "cno": "058657718",
+        "mail": "nobita@gmail.com",
+        "department": "Mechanical",
+        "issues": "['coach cleanliness', 'dysfunctional washrooms', 'staff negligence']"
     },
     {
-        "train_number": "85392",
-        "date": "2024-08-06",
-        "issues": "['Train Delay', 'Coach Cleanliness', 'Air Conditioning Issues', 'Food Quality', 'Staff Behavior', 'Announcements', 'Seat Comfort', 'Train Maintenance', 'Lighting Issues']"
+        "train_number": "12345",
+        "date_of_problem": "2024-09-03",
+        "complaint_registered": "06/09/2024",
+        "cno": "602048312",
+        "mail": "halo@gmail.com",
+        "department": "Commercial",
+        "issues": "['Overcharging by TTE', 'Violation of Railway Rules']"
+    },
+    {
+        "train_number": "12345",
+        "date_of_problem": "2024-09-03",
+        "complaint_registered": "06/09/2024",
+        "cno": "915609765",
+        "mail": "fil@gmail.com",
+        "department": "Security",
+        "issues": "['Theft on Train', 'Security Concerns']"
+    },
+    {
+        "train_number": "12345",
+        "date_of_problem": "2024-09-07",
+        "complaint_registered": "06/09/2024",
+        "cno": "945589289",
+        "mail": "ghi@rknec.edu",
+        "department": "Security",
+        "issues": "['Theft on Train', 'Security Concerns']"
+    },
+    {
+        "train_number": "45678",
+        "date_of_problem": "2024-09-07",
+        "complaint_registered": "07/09/2024",
+        "cno": "014459021",
+        "mail": "joi@gmail.com",
+        "department": "Traffic",
+        "issues": "[  'Train Delay',  'Coach Cleanliness',  'Air Conditioning Malfunction',  'Food Quality',  'Staff Behavior',  'Train Speed and Ride Quality', 'Seat Comfort',  'Train Maintenance',  'Lighting']"
     }
 ]

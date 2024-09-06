@@ -4,9 +4,14 @@ from main import crew, chatcrew
 from helperfunctions import *
 import plotly.express as px
 from collections import Counter
+from datetime import date
+import pandas as pd
+import json 
+import requests 
+from streamlit_lottie import st_lottie 
 
 st.set_page_config(layout="wide")
-pages = ["Home", "LiveChat", "Complaint Lodger"]
+pages = ["Home", "LiveChat","Complaints Directory", "Complaint Lodger"]
 page = st.sidebar.selectbox("Menu", pages, help="Navigate using this pane.")
 
 with open("style.css") as f:
@@ -38,7 +43,60 @@ if page == "Home":
                  color_discrete_sequence=px.colors.qualitative.Vivid)
     fig.update_layout(xaxis_tickangle=-45)
     st.plotly_chart(fig)
-    
+    c1,c2 = st.columns([1,1])
+    with c1:
+        dep = pie_plotter()
+        department_counts = Counter(dep)
+        labels, values = zip(*department_counts.items())
+        data = {'Department': labels, 'Count': values}
+        fig = px.pie(data, names='Department', values='Count', title='Complaints by Department',color_discrete_sequence=px.colors.qualitative.Vivid)
+        st.plotly_chart(fig)
+    with c2: 
+        date_counts = Counter(date_plotter())
+        df = pd.DataFrame(list(date_counts.items()), columns=['Date', 'Count'])
+        df['Date'] = pd.to_datetime(df['Date'])
+        df = df.sort_values('Date')
+        fig = px.line(df, x='Date', y='Count', title='Complaints Registered Per Day',
+                  labels={'Date': 'Date', 'Count': 'Number of Complaints',},
+                  color_discrete_sequence=px.colors.sequential.Inferno,
+                  markers=True)
+        fig.update_layout(xaxis_tickangle=-45)
+        st.plotly_chart(fig)
+
+  
+elif page == "Complaints Directory":
+    url = requests.get( 
+    "https://lottie.host/f4e79009-dce8-4792-9301-3c170d8bd054/jzWvnKQ6Xx.json") 
+    url_json = dict() 
+    if url.status_code == 200: 
+        url_json = url.json() 
+    else: 
+        print("Error in the URL")
+    st.sidebar.markdown('<h4 class="gradient-text">Complaints Directory</h4>', unsafe_allow_html=True)
+    st.sidebar.markdown("Access all complaints filed till date using advanced filtering methods.")
+    with st.sidebar: 
+        st_lottie(url_json)
+    def display_complaint_card(complaint):
+        st.markdown(
+            f"""
+            <div class="card">
+            <h4 style="font-family:'Playfair Display', serif;"><strong>Complaint Number:</strong> {complaint['cno']}<h4>
+            <p>Train Number: {complaint['train_number']}<br>
+            Department:  {complaint['department']}<br>
+            <strong>Complaint Registered:</strong> {complaint['complaint_registered']}</p>
+            <p class="issues"><strong>Issues:</strong> {complaint['issues']}</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    depfilter = list(departments.keys())
+    depfilter.insert(0,'None')
+    filter = st.selectbox("Filter by Department",depfilter)
+    logs = all_logs()
+    cols = st.columns(3)
+    for i, complaint in enumerate(logs):
+        with cols[i % 3]:
+            display_complaint_card(complaint)
 
 elif page == "LiveChat":
     st.sidebar.markdown("\n\n\n")
@@ -79,7 +137,7 @@ elif page == "Complaint Lodger":
         with c2: 
             date = st.date_input('Date *')
         
-        st.text_input('Email')
+        mail = st.text_input('Email *')
         journey_details, pnr_no = st.columns([1, 1])
         with journey_details:
             st.selectbox('Journey Details', ['PNR','Seat number', 'Station Code'])
@@ -103,9 +161,15 @@ elif page == "Complaint Lodger":
                 inputs = {"complaint": complaint, "departments": departments}
                 crew_output = crew.kickoff(inputs = inputs)
                 st.write(crew_output.raw)
+                cno = generate_unique_id()
                 log = {
                     'train_number': str(train_number),
-                    'date': str(date),
+                    'date_of_problem': str(date),
+                    'complaint_registered': str(date.today().strftime("%d/%m/%Y")),
+                    'cno': cno,
+                    'mail':str(mail),
+                    'department':eval(crew_output.tasks_output[1].raw.replace("[", "{").replace("]", "}").replace("'", '"'))['department'],
                     'issues': crew_output.tasks_output[0].raw.strip("```json\n").strip("```").replace("\"", "'").replace("\\", "").replace("\n", "")
                 }
+                st.success(f'Your Complaint No. is: **{cno}**, use it to access your complaint status.')
                 logger(log)
