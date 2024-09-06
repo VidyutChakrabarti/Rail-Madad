@@ -13,7 +13,7 @@
 }
 
 .gradient-text {
-    background: linear-gradient(to right, #ff3300, #7bfcfe, #ff7e5f);
+    background: linear-gradient(to right, #9f0bfb, #ffb431, #b57dff);
     background-size: 200% auto;
     background-clip: text;
     -webkit-background-clip: text;
@@ -24,18 +24,19 @@
     font-family: 'Playfair Display', serif;
 }
 
+
 .gradient-line {
     height: 10px;
     border: none;
     color: #00008B;
     background-color: #00008B;
-    background-image: linear-gradient(to right, #ff3300, #7bfcfe, #ff7e5f);
+    background-image: linear-gradient(to right, #9f0bfb, #ffb431, #b57dff);
     background-size: 200% auto;
     animation: gradient-move 8s linear infinite;
 }
 
 .block-container {
-    padding-top: 3rem;
+    padding-top: 2rem;
     padding-bottom: 0rem;
     padding-left: 3rem;
     padding-right: 3rem;

@@ -91,13 +91,23 @@ elif page == "Complaints Directory":
         )
     depfilter = list(departments.keys())
     depfilter.insert(0,'None')
-    filter = st.selectbox("Filter by Department",depfilter)
+    
+    with st.form(key='filters'):
+        filter = st.multiselect("Filter by Department",depfilter)
+        c1,c2,c3 = st.columns([1,1,1])
+        with c1:
+            st.text_input("Filter by train_no.")
+        with c2:
+            st.text_input("Filter by UCID")
+        with c3: 
+            st.slider("Filter by Date Range:", min_value=date(2024,9,1), max_value=date(2024,9,30), value=(date(2024,9,9), date(2024,9,21)))
+        submit = st.form_submit_button("Apply Filters")
     logs = all_logs()
     cols = st.columns(3)
     for i, complaint in enumerate(logs):
         with cols[i % 3]:
             display_complaint_card(complaint)
-
+    
 elif page == "LiveChat":
     st.sidebar.markdown("\n\n\n")
     st.markdown('<h1 class="gradient-text">Rail Madad AI Assitant</h1>', unsafe_allow_html=True)
