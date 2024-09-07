@@ -6,11 +6,12 @@ import plotly.express as px
 from collections import Counter
 from datetime import date
 import pandas as pd
-import json 
 import requests 
 from streamlit_lottie import st_lottie 
 
-st.set_page_config(layout="wide")
+st.set_page_config(page_title='Rail-Madad', page_icon = "raillogo.png", layout = 'wide')
+
+#st.set_page_config(layout="wide")
 pages = ["Home", "LiveChat","Complaints Directory", "Complaint Lodger"]
 page = st.sidebar.selectbox("Menu", pages, help="Navigate using this pane.")
 
@@ -89,11 +90,13 @@ elif page == "Complaints Directory":
             """,
             unsafe_allow_html=True
         )
-    depfilter = list(departments.keys())
-    depfilter.insert(0,'None')
     
     with st.form(key='filters'):
-        filter = st.multiselect("Filter by Department",depfilter)
+        c1,c2 = st.columns([2,1])
+        with c1:
+            filter = st.multiselect("Filter by Department",list(departments.keys()))
+        with c2:
+            sort = st.selectbox("Sort by", ['Priority', 'Date of filing'])
         c1,c2,c3 = st.columns([1,1,1])
         with c1:
             st.text_input("Filter by train_no.")

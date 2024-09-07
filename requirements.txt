@@ -1,11 +1,13 @@
 crewai==0.51.1
-crewai_tools==0.8.3
-langchain==0.2.15
+crewai_tools==0.12.0
+langchain==0.2.16
 langchain_google_genai==1.0.10
+pandas==2.2.2
 Pillow==10.4.0
 plotly==5.23.0
-toml
 Requests==2.32.3
 streamlit==1.37.1
+streamlit_lottie==0.0.5
 vaderSentiment==3.3.2
 Wikipedia_API==0.7.1
+pysqlite3-binary

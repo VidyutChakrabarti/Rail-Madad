@@ -22,6 +22,7 @@
     font-size: 30px;
     font-weight: bold;
     font-family: 'Playfair Display', serif;
+    padding: 5px;
 }
 
 
@@ -36,7 +37,7 @@
 }
 
 .block-container {
-    padding-top: 2rem;
+    padding-top: 3rem;
     padding-bottom: 0rem;
     padding-left: 3rem;
     padding-right: 3rem;
@@ -60,6 +61,7 @@
 }
 
 .card:hover {
+    background-color: rgb(251, 107, 136);
     transform: scale(1.05);
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
 }

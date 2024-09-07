@@ -32,7 +32,7 @@ def plotter(train_number=None):
             for item in logs:
                 all_issues += ast.literal_eval(item['issues'])
             print("No trains found.")
-            st.warning("No trains found.")
+            st.error("No Trains found.")
         return all_issues
     else:
         return ['Train Delay']
