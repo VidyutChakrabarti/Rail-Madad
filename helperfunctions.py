@@ -5,10 +5,18 @@ import streamlit as st
 import random
 file_path = 'log_file.json'
 
-def all_logs():
+def all_logs(dep=None):
     with open(file_path, 'r') as file:
         complaints = json.load(file)
-        return complaints
+        all_comp = []
+        for item in complaints:
+            if dep is None or item['department'] in dep:
+                all_comp.append(item)
+        
+        if len(all_comp) == 0:
+            all_comp = complaints
+    
+        return all_comp
     
 def logger(log):
     if os.path.exists(file_path):
@@ -31,7 +39,6 @@ def plotter(train_number=None):
         if(len(all_issues) == 0):
             for item in logs:
                 all_issues += ast.literal_eval(item['issues'])
-            print("No trains found.")
             st.error("No Trains found.")
         return all_issues
     else:

@@ -105,7 +105,7 @@ elif page == "Complaints Directory":
         with c3: 
             st.slider("Filter by Date Range:", min_value=date(2024,9,1), max_value=date(2024,9,30), value=(date(2024,9,9), date(2024,9,21)))
         submit = st.form_submit_button("Apply Filters")
-    logs = all_logs()
+    logs = all_logs(filter if filter else None)
     cols = st.columns(3)
     for i, complaint in enumerate(logs):
         with cols[i % 3]:

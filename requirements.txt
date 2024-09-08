@@ -10,4 +10,4 @@ streamlit==1.37.1
 streamlit_lottie==0.0.5
 vaderSentiment==3.3.2
 Wikipedia_API==0.7.1
-pysqlite3-binary
+
