@@ -3,6 +3,8 @@ import json
 import ast
 import streamlit as st
 import random
+import time 
+
 file_path = 'log_file.json'
 
 def all_logs(dep=None):
@@ -14,8 +16,8 @@ def all_logs(dep=None):
                 all_comp.append(item)
         
         if len(all_comp) == 0:
+            st.warning("No complaints found for this department.")
             all_comp = complaints
-    
         return all_comp
     
 def logger(log):
@@ -64,3 +66,8 @@ def date_plotter():
 
 def generate_unique_id(length=9):
     return ''.join([str(random.randint(0, 9)) for _ in range(length)])
+
+def word_generator(text, delay:float=0.07):
+    for word in text.split(): 
+        yield word + ' '
+        time.sleep(delay)

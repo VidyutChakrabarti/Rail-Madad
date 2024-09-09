@@ -132,7 +132,7 @@ elif page == "LiveChat":
 
         st.session_state['messages'].append({"role":"user","content": prompt})
         with st.chat_message("assistant"):
-            st.write(response.raw)
+            st.write_stream(word_generator(response.raw))
         st.session_state['messages'].append({"role": "assistant", "content": response.raw})
         
 
