@@ -1,5 +1,5 @@
 # SIH 1711
-AI based agentic workflow for automating complaint management system in Railways. 
+AI-driven autonomous workflow for automating railway complaint management.
 
 ### Library installations: 
 ```bash
