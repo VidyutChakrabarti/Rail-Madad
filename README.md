@@ -23,14 +23,20 @@ Link: https://rapidapi.com/rahilkhan224/api/indian-railway-irctc/playground
 ![Agentworkflow diagram](assets/agentsflow.png)
 
 #### Other Agent architectures:
+<div align="center">
+<table>
+  <tr>
+    <th>Chatbot</th>
+    <th>Data Mining agent</th>
+  </tr>
+  <tr>
+    <td><img src="assets/chatagent.png" style="height: 500px;"></td>
+    <td><img src="assets/dataagent.png" style="height: 500px;"></td>
+  </tr>
+</table>
+</div>
 
-| Chatbot | Data Mining agent |
-|---------|---------|
-| ![Chatbot agent](assets/chatagent.png) | ![Data Mining agent](assets/dataagent.png) |
-
+<br/>
 
 ### Video describing the features: 
-<div align="center">
-
 [![Watch the video](https://img.youtube.com/vi/Ts_lwYFlMB4/0.jpg)](https://www.youtube.com/watch?v=Ts_lwYFlMB4)
-</div>
