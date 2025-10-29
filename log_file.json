@@ -396,5 +396,65 @@
         "priority": 3,
         "status": "open",
         "is_sub_complaint": true
+    },
+    {
+        "cno": "037142175",
+        "train_number": "12616",
+        "date_of_problem": "2025-10-29",
+        "complaint_registered": "29/10/2025",
+        "mail": "shehzanask@gmail.com",
+        "department": "Mechanical",
+        "complaint_text": "The air conditioning system in the designated coach was reported as completely non-functional for the duration of the journey. This persistent malfunction resulted in significant discomfort for passengers, particularly given prevailing temperatures. Prompt intervention by the Mechanical department is requested to diagnose and rectify this critical issue, ensuring the operational efficiency of HVAC systems and maintaining acceptable passenger comfort levels in future services. Such deficiencies reflect adversely on the quality of onboard amenities.",
+        "issues": [
+            "non-functional air conditioning"
+        ],
+        "priority": 2,
+        "status": "open",
+        "is_sub_complaint": true
+    },
+    {
+        "cno": "037142175",
+        "train_number": "12616",
+        "date_of_problem": "2025-10-29",
+        "complaint_registered": "29/10/2025",
+        "mail": "shehzanask@gmail.com",
+        "department": "Commercial",
+        "complaint_text": "A complaint has been registered concerning the unprofessional behavior exhibited by train staff during the journey. Passengers reported instances where staff members were unhelpful and dismissive when approached for assistance, significantly detracting from the passenger experience. The Commercial department is requested to investigate this matter thoroughly, provide appropriate guidance or retraining to the personnel involved, and reinforce the paramount importance of courteous and responsive customer service to uphold Indian Railways' service standards.",
+        "issues": [
+            "staff behavior"
+        ],
+        "priority": 3,
+        "status": "open",
+        "is_sub_complaint": true
+    },
+    {
+        "cno": "154167578",
+        "train_number": "12615",
+        "date_of_problem": "2025-10-30",
+        "complaint_registered": "30/10/2025",
+        "mail": "passenger@test.com",
+        "department": "Mechanical",
+        "complaint_text": "The air conditioning system in the designated coach was reported as completely non-functional for the duration of the journey. Passengers experienced considerable discomfort due to the absence of adequate cooling. This issue highlights a critical maintenance oversight that necessitates immediate inspection, repair, and verification of the AC unit's operational status to ensure passenger comfort and adherence to service standards on future services.",
+        "issues": [
+            "Non-functional AC"
+        ],
+        "priority": 2,
+        "status": "open",
+        "is_sub_complaint": true
+    },
+    {
+        "cno": "154167578",
+        "train_number": "12615",
+        "date_of_problem": "2025-10-30",
+        "complaint_registered": "30/10/2025",
+        "mail": "passenger@test.com",
+        "department": "Commercial",
+        "complaint_text": "A complaint has been registered concerning the unprofessional and discourteous behavior exhibited by train staff. When approached by passengers for assistance regarding an onboard issue, the staff member responded unhelpfully and rudely, failing to address the concern appropriately or maintain professional decorum. This conduct is unacceptable and negatively impacts passenger experience, requiring an immediate review of staff customer service training and adherence to established protocols.",
+        "issues": [
+            "Staff Behavior"
+        ],
+        "priority": 3,
+        "status": "open",
+        "is_sub_complaint": true
     }
 ]

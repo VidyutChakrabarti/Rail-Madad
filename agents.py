@@ -2,10 +2,30 @@ from crewai import Agent
 from tools import *
 import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
+import os
 
-gemini_api_key = st.secrets['api_keys']['GEMINI_API_KEY']
-gemini_model_name = st.secrets['model']['GEMINI_MODEL_NAME']
-gemini_model = GoogleGenerativeAI(model=gemini_model_name, google_api_key=gemini_api_key)
+# Load model configuration from Streamlit secrets or environment variables
+def _get_secret(path_keys, env_key, default=None):
+    try:
+        # Navigate nested keys in st.secrets like ['api_keys', 'GEMINI_API_KEY']
+        value = st.secrets
+        for key in path_keys:
+            value = value[key]
+        if value:
+            return value
+    except Exception:
+        pass
+    return os.getenv(env_key, default)
+
+gemini_api_key = _get_secret(['api_keys', 'GEMINI_API_KEY'], 'GEMINI_API_KEY')
+gemini_model_name = _get_secret(['model', 'GEMINI_MODEL_NAME'], 'GEMINI_MODEL_NAME', default='gemini-1.5-pro')
+
+# Initialize model lazily and avoid halting the whole app on import
+gemini_model = None
+if gemini_api_key:
+    gemini_model = GoogleGenerativeAI(model=gemini_model_name, google_api_key=gemini_api_key)
+else:
+    st.warning("GEMINI_API_KEY not set. AI features will be disabled until configured.")
 from crewai_tools import (
    CodeInterpreterTool
 )

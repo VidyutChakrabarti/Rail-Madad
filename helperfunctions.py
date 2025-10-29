@@ -265,3 +265,89 @@ def create_sub_complaints(original_complaint_data, department_assignments):
         sub_complaints.append(sub_complaint)
     
     return sub_complaints
+
+# ADDITIONAL RBAC FUNCTIONS
+def filter_complaints_by_user_email(user_email):
+    """Filter complaints submitted by specific user (for passengers)"""
+    all_complaints = all_logs()
+    return [c for c in all_complaints if c.get('mail') == user_email]
+
+def filter_complaints_by_department_access(department):
+    """Filter complaints for department staff/supervisors"""
+    all_complaints = all_logs()
+    filtered = []
+    
+    for complaint in all_complaints:
+        complaint_depts = get_all_departments_for_complaint(complaint)
+        if department in complaint_depts:
+            filtered.append(complaint)
+    
+    return filtered
+
+def get_department_statistics(department=None):
+    """Get statistics for specific department or all departments"""
+    all_complaints = all_logs()
+    
+    if department:
+        # Filter by specific department
+        dept_complaints = filter_complaints_by_department_access(department)
+        stats = {
+            'total_complaints': len(dept_complaints),
+            'open_complaints': len([c for c in dept_complaints if c.get('status', 'open') == 'open']),
+            'in_progress': len([c for c in dept_complaints if c.get('status') == 'in_progress']),
+            'resolved': len([c for c in dept_complaints if c.get('status') == 'resolved']),
+            'avg_priority': round(sum([c.get('priority', 3) for c in dept_complaints]) / len(dept_complaints) if dept_complaints else 0, 1)
+        }
+    else:
+        # System-wide statistics
+        stats = {
+            'total_complaints': len(all_complaints),
+            'open_complaints': len([c for c in all_complaints if c.get('status', 'open') == 'open']),
+            'in_progress': len([c for c in all_complaints if c.get('status') == 'in_progress']),
+            'resolved': len([c for c in all_complaints if c.get('status') == 'resolved']),
+            'avg_priority': round(sum([c.get('priority', 3) for c in all_complaints]) / len(all_complaints) if all_complaints else 0, 1)
+        }
+    
+    return stats
+
+def update_complaint_status(complaint_cno, new_status, resolution_notes="", updated_by="", department=None):
+    """Update complaint status (for staff/supervisor/admin)
+    
+    Args:
+        complaint_cno: Complaint number to update
+        new_status: New status value
+        resolution_notes: Notes about resolution
+        updated_by: Username who made the update
+        department: Optional department filter (for sub-complaints with same cno)
+    """
+    import json
+    from datetime import datetime
+    
+    with open(file_path, 'r') as f:
+        complaints = json.load(f)
+    
+    updated = False
+    for complaint in complaints:
+        if complaint['cno'] == complaint_cno:
+            # If department is specified, only update matching department sub-complaints
+            if department is not None:
+                complaint_depts = get_all_departments_for_complaint(complaint)
+                if department not in complaint_depts:
+                    continue
+            
+            complaint['status'] = new_status
+            complaint['resolution_notes'] = resolution_notes
+            complaint['updated_at'] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            complaint['updated_by'] = updated_by
+            updated = True
+            
+            # If department filter is provided, only update one matching complaint
+            if department is not None:
+                break
+    
+    if updated:
+        with open(file_path, 'w') as f:
+            json.dump(complaints, f, indent=4)
+        return True
+    else:
+        return False

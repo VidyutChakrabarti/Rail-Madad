@@ -12,3 +12,6 @@ vaderSentiment==3.3.2
 vaderSentiment==3.3.2
 Wikipedia_API==0.7.1
 google_cloud_resource_manager==1.12.5
+streamlit-authenticator==0.3.3
+PyYAML==6.0.1
+pillow==10.3.0
