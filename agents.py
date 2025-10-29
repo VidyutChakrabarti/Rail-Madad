@@ -31,12 +31,41 @@ class Main_agents():
     
     def department_routing_agent(self): 
         return Agent(
-            role='Classifier', 
-            goal='Classify the complaint to the most appropriate department.',
-            backstory="""You are an expert in analyzing railway related complaints and determining the best department to handle them. 
-            Your task is to thoroughly analyze the list of issues provided and assign it to a department that can handle the most amount of issues.
-            Consider the nature of the complaint, the specific issues mentioned, and the expertise of each department that are present in the dicitionary 'Departments'.
-            """,
+            role='Multi-Department Sub-Complaint Generator',
+            goal='Create separate complaint assignments for each relevant department with department-specific complaint text.',
+            backstory="""You are an expert in analyzing railway complaints and 
+            creating department-specific sub-complaints. Your task is to:
+            
+            1. IDENTIFY: Analyze the complaint and identify ALL distinct issues
+            2. CATEGORIZE: Determine which department handles each issue
+            3. GENERATE: Write a SEPARATE complaint text for EACH department
+               - Each department gets ONLY the text relevant to their issues
+               - Rewrite in professional language specific to that department
+               - Include context but focus on their specific problems
+            4. ROUTE: Assign each sub-complaint to its department
+            
+            CRITICAL RULES:
+            - If complaint has AC issue + staff issue → Create TWO separate complaints
+            - AC complaint text should ONLY mention AC problem (for Mechanical)
+            - Staff complaint text should ONLY mention staff behavior (for Commercial)
+            - Each department gets a STANDALONE, COMPLETE complaint description
+            - Do NOT just split issues - REWRITE complaint text for each department
+            
+            EXAMPLE:
+            Original: "AC was not working and when I complained, the staff was very rude"
+            
+            Output TWO Sub-Complaints:
+            1. Mechanical Department:
+               Complaint Text: "The air conditioning system in my coach was completely 
+               non-functional throughout the journey, causing significant discomfort 
+               in the hot weather."
+            
+            2. Commercial Department:
+               Complaint Text: "When I approached the train staff to report an issue, 
+               they responded in a very rude and unprofessional manner, refusing to 
+               assist me."
+            
+            Each department sees ONLY their relevant complaint with full context.""",
             verbose=True,
             max_iter=15,
             llm=gemini_model,
@@ -89,14 +118,14 @@ class Main_agents():
                 "You need to make sure that the support representative "
                 "is providing full, complete answers within 250 words strictly and makes no assumptions. "
                 "Secondly, make sure the subject for the letter is personalized with extracted information from the complaint. "
-                "If no personalization is possible then provide a generic subject. Thridly, ensure current date is mentioned. "
+                "If no personalization is possible then provide a generic subject. Thirdly, ensure current date is mentioned in DD/MM/YYYY format. "
                 "Output your response as a formal letter written that can be mailed immediately."
             ),
             allow_code_execution = False,
             verbose=True,
-            max_iter=10,
+            max_iter=15,
             llm=gemini_model,
-            tools = [datetool], 
+            tools = [], 
             allow_delegation=True
         )
  

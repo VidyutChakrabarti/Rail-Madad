@@ -52,5 +52,349 @@
         "mail": "joi@gmail.com",
         "department": "Traffic",
         "issues": "[  'Train Delay',  'Coach Cleanliness',  'Air Conditioning Malfunction',  'Food Quality',  'Staff Behavior',  'Train Speed and Ride Quality', 'Seat Comfort',  'Train Maintenance',  'Lighting']"
+    },
+    {
+        "train_number": "12616",
+        "date_of_problem": "2025-10-27",
+        "complaint_registered": "27/10/2025",
+        "cno": "398394978",
+        "mail": "sshahzan0@gmail.com",
+        "department": "Mechanical",
+        "issues": "['coach cleanliness', 'dysfunctional washrooms']"
+    },
+    {
+        "train_number": "12616",
+        "date_of_problem": "2025-10-27",
+        "complaint_registered": "27/10/2025",
+        "cno": "032026301",
+        "mail": "sshahzan0@gmail.com",
+        "department": "Commercial",
+        "issues": "[  'Non-functional AC',  'Staff behavior']"
+    },
+    {
+        "train_number": "12616",
+        "date_of_problem": "2025-10-27",
+        "complaint_registered": "27/10/2025",
+        "cno": "546494423",
+        "mail": "shehzanask@gmail.com",
+        "department": "Mechanical",
+        "departments": [
+            {
+                "department": "Mechanical",
+                "issues": [
+                    "AC malfunction"
+                ],
+                "reasoning": "Handles the maintenance and operation of coaches, including air conditioning systems."
+            },
+            {
+                "department": "Commercial",
+                "issues": [
+                    "Staff behavior"
+                ],
+                "reasoning": "Manages passenger services and is responsible for addressing issues related to staff conduct and customer interaction."
+            }
+        ],
+        "issues": "['AC malfunction', 'Staff behavior']"
+    },
+    {
+        "train_number": "12616",
+        "date_of_problem": "2025-10-27",
+        "complaint_registered": "27/10/2025",
+        "cno": "950831643",
+        "mail": "shehzanask@gmail.com",
+        "department": "Mechanical",
+        "departments": [
+            {
+                "department": "Mechanical",
+                "issues": [
+                    "AC malfunction"
+                ],
+                "reasoning": "The Mechanical department manages the maintenance and operation of coaches, which includes air conditioning systems."
+            },
+            {
+                "department": "Commercial",
+                "issues": [
+                    "Staff behavior"
+                ],
+                "reasoning": "The Commercial department manages passenger services and is responsible for addressing issues related to staff behavior towards passengers."
+            }
+        ],
+        "issues": "[  'AC malfunction',  'Staff behavior']"
+    },
+    {
+        "train_number": "12616",
+        "date_of_problem": "2025-10-27",
+        "complaint_registered": "27/10/2025",
+        "cno": "344433310",
+        "mail": "shehzanask@gmail.com",
+        "department": "Mechanical",
+        "departments": [
+            {
+                "department": "Mechanical",
+                "issues": [
+                    "AC malfunction"
+                ],
+                "reasoning": "Handles the maintenance and operation of coaches, including AC systems."
+            },
+            {
+                "department": "Commercial",
+                "issues": [
+                    "staff behavior"
+                ],
+                "reasoning": "Manages passenger services, which includes addressing issues related to staff behavior."
+            }
+        ],
+        "issues": "[  'AC malfunction',  'staff behavior']"
+    },
+    {
+        "train_number": "12616",
+        "date_of_problem": "2025-10-27",
+        "complaint_registered": "27/10/2025",
+        "cno": "076206261",
+        "mail": "shehzanask@gmail.com",
+        "department": "Mechanical",
+        "departments": [
+            {
+                "department": "Mechanical",
+                "issues": [
+                    "AC non-functional"
+                ],
+                "reasoning": "Handles the maintenance and operation of coaches, which includes AC systems."
+            },
+            {
+                "department": "Commercial",
+                "issues": [
+                    "Staff behavior"
+                ],
+                "reasoning": "Manages passenger services and staff interactions affecting passengers."
+            }
+        ],
+        "issues": "[  'AC non-functional',  'Staff behavior']"
+    },
+    {
+        "train_number": "12615",
+        "date_of_problem": "2025-10-27",
+        "complaint_registered": "27/10/2025",
+        "cno": "976901589",
+        "mail": "sshahzan0@gmail.com",
+        "department": "Electrical",
+        "departments": [
+            {
+                "department": "Electrical",
+                "issues": [
+                    "Dysfunctional lighting"
+                ],
+                "reasoning": "Handles electrical equipment and lighting systems within coaches and stations."
+            },
+            {
+                "department": "Mechanical",
+                "issues": [
+                    "Broken seating"
+                ],
+                "reasoning": "Manages the maintenance and operation of coaches, including interior fittings like seats."
+            },
+            {
+                "department": "Commercial",
+                "issues": [
+                    "Poor food quality"
+                ],
+                "reasoning": "Manages passenger services, including catering and food quality."
+            },
+            {
+                "department": "Traffic",
+                "issues": [
+                    "Train delay",
+                    "Lack of delay announcements"
+                ],
+                "reasoning": "Oversees the operation of trains, including scheduling, control, and the dissemination of operational information like delays to passengers."
+            },
+            {
+                "department": "Signal and Telecommunication",
+                "issues": [
+                    "Lack of delay announcements"
+                ],
+                "reasoning": "Maintains communication networks and public announcement systems, ensuring their proper functionality for relaying information."
+            }
+        ],
+        "issues": "[  'Dysfunctional lighting',  'Broken seating',  'Poor food quality',  'Train delay',  'Lack of delay announcements']"
+    },
+    {
+        "train_number": "12616",
+        "date_of_problem": "2025-10-27",
+        "complaint_registered": "27/10/2025",
+        "cno": "338993456",
+        "mail": "shehzanask@gmail.com",
+        "departments": [
+            {
+                "department": "Electrical",
+                "issues": [
+                    "Dysfunctional Coach Lighting"
+                ],
+                "reasoning": "The Electrical department handles the maintenance of electrical equipment, including coach lighting."
+            },
+            {
+                "department": "Mechanical",
+                "issues": [
+                    "Broken Seat"
+                ],
+                "reasoning": "The Mechanical department manages the maintenance of coaches, which includes repairing broken seats."
+            },
+            {
+                "department": "Commercial",
+                "issues": [
+                    "Poor Food Quality"
+                ],
+                "reasoning": "The Commercial department manages passenger services, including catering and food quality."
+            },
+            {
+                "department": "Traffic",
+                "issues": [
+                    "Train Delay and Lack of Announcement"
+                ],
+                "reasoning": "The Traffic department oversees the operation of trains, including scheduling and control, thus handling train delays."
+            },
+            {
+                "department": "Signal and Telecommunication",
+                "issues": [
+                    "Train Delay and Lack of Announcement"
+                ],
+                "reasoning": "The Signal and Telecommunication department maintains communication networks, which are responsible for public announcements."
+            }
+        ],
+        "issues": "[  'Dysfunctional Coach Lighting',  'Broken Seat',  'Poor Food Quality',  'Train Delay and Lack of Announcement']",
+        "department": "Multi-Department"
+    },
+    {
+        "cno": "748103536",
+        "parent_cno": "922085545",
+        "train_number": "12616",
+        "date_of_problem": "2025-10-27",
+        "complaint_registered": "27/10/2025",
+        "mail": "shehzanask@gmail.com",
+        "department": "Commercial",
+        "complaint_text": "AC in coach A1 was not working at all. When I complained to the TTE, he was extremely rude and refused to help",
+        "issues": [
+            "[  'AC malfunction',  'Staff behavior']"
+        ],
+        "priority": 3,
+        "status": "open",
+        "is_sub_complaint": true,
+        "departments": [
+            {
+                "department": "Commercial",
+                "issues": [
+                    "[  'AC malfunction',  'Staff behavior']"
+                ],
+                "reasoning": "Legacy single department assignment"
+            }
+        ]
+    },
+    {
+        "cno": "033778744",
+        "train_number": "12616",
+        "date_of_problem": "2025-10-27",
+        "complaint_registered": "27/10/2025",
+        "mail": "sshahzan0@gmail.com",
+        "department": "Mechanical",
+        "complaint_text": "During a recent journey, the air conditioning system in the assigned coach experienced a complete malfunction, rendering it non-operational throughout. This resulted in significant discomfort for passengers due to inadequate cooling and high temperatures within the compartment. Prompt inspection, diagnosis, and repair of the AC unit are urgently required to restore proper functionality, ensure passenger comfort, and maintain operational standards on future services. This issue reflects a critical maintenance lapse.",
+        "issues": [
+            "AC malfunction"
+        ],
+        "priority": 2,
+        "status": "open",
+        "is_sub_complaint": true,
+        "departments": [
+            {
+                "department": "Mechanical",
+                "issues": [
+                    "AC malfunction"
+                ],
+                "reasoning": "Legacy single department assignment"
+            }
+        ]
+    },
+    {
+        "cno": "033778744",
+        "train_number": "12616",
+        "date_of_problem": "2025-10-27",
+        "complaint_registered": "27/10/2025",
+        "mail": "sshahzan0@gmail.com",
+        "department": "Commercial",
+        "complaint_text": "A formal complaint has been registered concerning the unprofessional and inappropriate behavior exhibited by a member of the train staff during their duty. This conduct negatively impacts the overall passenger experience and reflects poorly on the customer service standards upheld by Indian Railways. It is imperative to investigate this staff behavior issue thoroughly and implement appropriate disciplinary measures or retraining to ensure all personnel adhere to expected standards of courtesy, professionalism, and passenger interaction.",
+        "issues": [
+            "Staff behavior"
+        ],
+        "priority": 3,
+        "status": "open",
+        "is_sub_complaint": true,
+        "departments": [
+            {
+                "department": "Commercial",
+                "issues": [
+                    "Staff behavior"
+                ],
+                "reasoning": "Legacy single department assignment"
+            }
+        ]
+    },
+    {
+        "cno": "004282094",
+        "train_number": "12616",
+        "date_of_problem": "2025-10-27",
+        "complaint_registered": "27/10/2025",
+        "mail": "sshahzan0@gmail.com",
+        "department": "Mechanical",
+        "complaint_text": "The air conditioning system in the coach experienced a complete malfunction during the journey. Passengers reported no cool air circulation, leading to significant discomfort. This issue indicates a failure in routine maintenance or an operational fault within the AC unit, requiring immediate technical inspection and repair by the Mechanical department to ensure passenger comfort and safety standards are upheld for future services.",
+        "issues": [
+            "AC malfunction"
+        ],
+        "priority": 2,
+        "status": "open",
+        "is_sub_complaint": true
+    },
+    {
+        "cno": "004282094",
+        "train_number": "12616",
+        "date_of_problem": "2025-10-27",
+        "complaint_registered": "27/10/2025",
+        "mail": "sshahzan0@gmail.com",
+        "department": "Commercial",
+        "complaint_text": "There was a significant complaint regarding the unprofessional behavior of the train staff. Passengers reported instances of staff being unhelpful, dismissive, or rude when approached for assistance, particularly concerning issues like the AC malfunction. Such conduct directly impacts passenger experience and reflects poorly on the railway's customer service standards, necessitating immediate review and potential retraining for the personnel involved.",
+        "issues": [
+            "staff behavior"
+        ],
+        "priority": 3,
+        "status": "open",
+        "is_sub_complaint": true
+    },
+    {
+        "cno": "829684596",
+        "train_number": "12616",
+        "date_of_problem": "2025-10-29",
+        "complaint_registered": "29/10/2025",
+        "mail": "sshahzan0@gmail.com",
+        "department": "Mechanical",
+        "complaint_text": "The air conditioning system within a passenger coach experienced a complete malfunction, leading to a significant failure in climate control during a recent journey. This operational defect caused considerable discomfort to passengers and compromised the expected travel conditions, requiring immediate attention. An urgent inspection and corrective maintenance action are required to restore full functionality and ensure passenger welfare on future services.",
+        "issues": [
+            "AC malfunction"
+        ],
+        "priority": 2,
+        "status": "open",
+        "is_sub_complaint": true
+    },
+    {
+        "cno": "829684596",
+        "train_number": "12616",
+        "date_of_problem": "2025-10-29",
+        "complaint_registered": "29/10/2025",
+        "mail": "sshahzan0@gmail.com",
+        "department": "Commercial",
+        "complaint_text": "A complaint has been received regarding the unprofessional conduct of a train staff member when interacting with passengers. The staff member's behavior was reported as uncooperative and discourteous, failing to address passenger concerns effectively. Such conduct is unacceptable and detracts from the passenger experience, necessitating a review of staff training protocols regarding customer service and professional etiquette to uphold service standards.",
+        "issues": [
+            "Staff behavior"
+        ],
+        "priority": 3,
+        "status": "open",
+        "is_sub_complaint": true
     }
 ]

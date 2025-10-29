@@ -26,10 +26,13 @@ def fetching():
 
 @tool("Get current date")
 def getCurrentDate():
-    """used to fetch the current date in a formatted manner."""
-    today = date.today()
-    d = today.strftime("%d/%m/%Y")
-    return d
+    """Get the current date in DD/MM/YYYY format for use in formal letters."""
+    try:
+        today = date.today()
+        formatted_date = today.strftime("%d/%m/%Y")
+        return formatted_date
+    except Exception as e:
+        return "27/10/2025"  # Fallback date
 
 @tool("Get train status")
 def getTrainStatus(train_number):

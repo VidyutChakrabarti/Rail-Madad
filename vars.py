@@ -18,3 +18,56 @@ departments = {
 scheduling_schema = {}
 
 urgency_eval = {}
+
+issue_department_mapping = {
+    # Mechanical Department Issues
+    "AC": "Mechanical",
+    "air conditioning": "Mechanical",
+    "AC malfunction": "Mechanical",
+    "AC not working": "Mechanical",
+    "broken seats": "Mechanical",
+    "seat damage": "Mechanical",
+    "door malfunction": "Mechanical",
+    "coach maintenance": "Mechanical",
+    
+    # Commercial Department Issues  
+    "staff behavior": "Commercial",
+    "staff rude": "Commercial",
+    "ticketing": "Commercial",
+    "refund": "Commercial",
+    "food quality": "Commercial",
+    "catering": "Commercial",
+    
+    # Electrical Department Issues
+    "lights": "Electrical",
+    "lighting": "Electrical",
+    "power supply": "Electrical",
+    "fan": "Electrical",
+    
+    # Safety Department Issues
+    "safety": "Safety",
+    "accident": "Safety",
+    "emergency": "Safety",
+    
+    # Security Department Issues
+    "theft": "Security",
+    "harassment": "Security",
+    
+    # Engineering Department Issues
+    "track": "Engineering",
+    "platform": "Engineering",
+    "station": "Engineering",
+    
+    # Medical Department Issues
+    "medical": "Medical",
+    "health": "Medical",
+    
+    # Signal and Telecommunication Issues
+    "signal": "Signal and Telecommunication",
+    "announcement": "Signal and Telecommunication",
+    
+    # Traffic Department Issues
+    "delay": "Traffic",
+    "late": "Traffic",
+    "cancellation": "Traffic",
+}
