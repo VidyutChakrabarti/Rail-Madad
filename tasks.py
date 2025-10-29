@@ -1,4 +1,5 @@
-from crewai import Task 
+from crewai import Task
+from vars import departments, issue_department_mapping 
 
 class Main_Tasks():
     def extract_main_issues(self, agent):
@@ -17,14 +18,91 @@ class Main_Tasks():
 
     def categorize_into_departments(self, agent, context):
         return Task(
-            description=(
-                "Classify the complaint into the most appropriate department based on the summarized issues in the context provided.\nDepartments: {departments}\n"
-                "Using the context provided, which summarizes the main issues from the complaint, determine the single department that is best equipped to handle the issues."
-            ),
-            expected_output=(
-                "Return only one department name that is the best fit to address the complaint and its description provided in Departments dictionary.\n"
-                "Example Output: ['department': 'Finance', 'handling':'Responsible for budgeting, accounting, and financial management.']"
-            ),
+            description="""Create department-specific sub-complaints from the original complaint.
+            
+            Available Departments:
+            {departments}
+            
+            Issue-Department Mapping Guide:
+            {issue_department_mapping}
+            
+            WORKFLOW:
+            1. Review the issues extracted in the context
+            2. Group issues by responsible department
+            3. For EACH department involved, create a COMPLETE complaint text that:
+               - Focuses ONLY on issues relevant to that department
+               - Is written in professional language
+               - Provides sufficient context for the department to act
+               - Stands alone as a complete complaint
+            4. Return ALL sub-complaints with their department assignments
+            
+            EXAMPLE INPUT (from context):
+            Issues: ['AC not working', 'staff rude', 'food cold']
+            
+            EXAMPLE OUTPUT:
+            [
+                {{
+                    "department": "Mechanical",
+                    "complaint_text": "The air conditioning unit in Coach B3 was completely 
+                    non-operational during the entire journey from Delhi to Mumbai on 
+                    28/10/2025. Despite multiple attempts to adjust the controls, there 
+                    was no cool air circulation, causing extreme discomfort to passengers 
+                    in the hot weather. This is a serious maintenance issue that needs 
+                    immediate attention.",
+                    "issues": ["AC not working"],
+                    "priority_suggestion": 2
+                }},
+                {{
+                    "department": "Commercial",
+                    "complaint_text": "The TTE staff member in Coach B3 displayed extremely 
+                    rude and unprofessional behavior when passengers requested assistance 
+                    with the non-functioning AC. Instead of helping, the staff member was 
+                    dismissive and spoke in a disrespectful manner. This reflects poorly 
+                    on Indian Railways' customer service standards and requires staff 
+                    retraining.",
+                    "issues": ["staff rude"],
+                    "priority_suggestion": 3
+                }},
+                {{
+                    "department": "Commercial",
+                    "complaint_text": "The food served in the pantry car during the journey 
+                    was served cold and appeared stale. The quality of catering services 
+                    needs immediate review to maintain passenger satisfaction and food 
+                    safety standards.",
+                    "issues": ["food cold"],
+                    "priority_suggestion": 3
+                }}
+            ]
+            
+            KEY POINTS:
+            - Each sub-complaint is COMPLETE and INDEPENDENT
+            - Department sees ONLY their relevant issues
+            - Professional language appropriate for railway operations
+            - Include train details, date, coach number if available
+            - Suggest priority level (1-5) for each sub-complaint""",
+            expected_output="""Return a JSON array where each element represents a 
+            sub-complaint for a specific department.
+            
+            STRICT FORMAT:
+            [
+                {{
+                    "department": "Department Name",
+                    "complaint_text": "Complete, standalone complaint description for this department",
+                    "issues": ["list", "of", "specific", "issues"],
+                    "priority_suggestion": 2,
+                    "reasoning": "Why this department is responsible"
+                }}
+            ]
+            
+            REQUIREMENTS:
+            - complaint_text MUST be 50-150 words
+            - complaint_text MUST be department-specific (not generic)
+            - complaint_text MUST be on a SINGLE LINE with no line breaks or newlines
+            - If only one department, return array with one element
+            - If multiple departments, create separate entries
+            - Each entry is an independent, actionable complaint
+            - Must be valid JSON array
+            - Do NOT include actual newlines (\n) or line breaks in strings""",
             agent=agent,
             context=context
         )
@@ -87,7 +165,8 @@ class Main_Tasks():
             "thoroughly, with a helpful and friendly tone. You must also ensure the subject summarizes "
             "the response well within one sentence. "
             "Ensure the response is well-supported and "
-            "leaves no questions unanswered."
+            "leaves no questions unanswered. "
+            "IMPORTANT: Include today's date in the format DD/MM/YYYY at the top of the letter header."
           ), 
           expected_output=(
         "A final, detailed, and informative response "
@@ -98,7 +177,7 @@ class Main_Tasks():
         "Ensure that the final answer is written like a formal letter from a prestigious brand (Indian Railways)."
         """Example output: 
         Dear Sir/Madam,
-        Date: 12/08/2004,
+        Date: 27/10/2025
         Subject: Response to the complaint lodged regarding your journey on train number 99783 dated dd/mm/yyyy. 
         We sincerely apologize for the inconvenience you experienced during your recent journey with Indian Railways. Your feedback is invaluable, and we are committed to addressing the issues promptly.
         Coach Cleanliness & Washroom Conditions: We are enhancing our cleaning protocols and training staff to ensure better cleanliness within two weeks.

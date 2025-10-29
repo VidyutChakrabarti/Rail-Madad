@@ -8,6 +8,8 @@ from datetime import date
 import pandas as pd
 import requests 
 from streamlit_lottie import st_lottie 
+import json
+import re 
 
 st.set_page_config(page_title='Rail-Madad', page_icon = "raillogo.png", layout = 'wide')
 
@@ -46,12 +48,24 @@ if page == "Home":
     st.plotly_chart(fig)
     c1,c2 = st.columns([1,1])
     with c1:
-        dep = pie_plotter()
+        # Multi-department aware pie chart
+        dep = pie_plotter()  # This now returns expanded department list
+
+        # Count departments (some complaints may have multiple departments)
         department_counts = Counter(dep)
-        labels, values = zip(*department_counts.items())
-        data = {'Department': labels, 'Count': values}
-        fig = px.pie(data, names='Department', values='Count', title='Complaints by Department',color_discrete_sequence=px.colors.qualitative.Vivid)
-        st.plotly_chart(fig)
+        labels, values = zip(*department_counts.items()) if department_counts else ([], [])
+
+        if labels:
+            data = {'Department': labels, 'Count': values}
+            fig = px.pie(data, names='Department', values='Count', 
+                         title='Complaints by Department (Multi-department complaints counted for each)',
+                         color_discrete_sequence=px.colors.qualitative.Vivid)
+            st.plotly_chart(fig)
+            
+            # Add info message
+            st.info("📌 Note: Complaints assigned to multiple departments are counted once for each department.")
+        else:
+            st.warning("No complaint data available yet.")
     with c2: 
         date_counts = Counter(date_plotter())
         df = pd.DataFrame(list(date_counts.items()), columns=['Date', 'Count'])
@@ -78,16 +92,69 @@ elif page == "Complaints Directory":
     with st.sidebar: 
         st_lottie(url_json)
     def display_complaint_card(complaint):
+        # Extract department info
+        if 'departments' in complaint and isinstance(complaint['departments'], list):
+            # Multi-department format
+            dept_names = [d['department'] for d in complaint['departments']]
+            dept_display = ', '.join(dept_names)
+            
+            # Create detailed department breakdown
+            dept_details = "<br>".join([
+                f"<span style='color:#9f0bfb'>• {d['department']}</span>: {', '.join(d.get('issues', []))}" 
+                for d in complaint['departments']
+            ])
+        elif complaint.get('is_sub_complaint', False):
+            # Sub-complaint format (single department with complaint_text)
+            dept_display = complaint.get('department', 'N/A')
+            
+            # Show complaint text as details
+            complaint_text = complaint.get('complaint_text', '')
+            if complaint_text:
+                dept_details = f"<span style='color:#9f0bfb'>• {dept_display}</span><br><i style='font-size:0.9em'>{complaint_text[:100]}...</i>"
+            else:
+                issues = complaint.get('issues', [])
+                if isinstance(issues, list):
+                    issues_str = ', '.join(issues)
+                else:
+                    issues_str = str(issues)
+                dept_details = f"<span style='color:#9f0bfb'>• {dept_display}</span>: {issues_str}"
+            
+            # Show parent_cno if available
+            if 'parent_cno' in complaint:
+                dept_display += f" (Sub: {complaint['parent_cno']})"
+        else:
+            # Legacy single-department format
+            dept_display = complaint.get('department', 'N/A')
+            # Skip "Multi-Department" as it's just a placeholder
+            if dept_display == "Multi-Department":
+                dept_display = "Multiple Departments"
+            
+            # Try to get issues
+            issues = complaint.get('issues', [])
+            if isinstance(issues, str):
+                issues_str = issues
+            elif isinstance(issues, list):
+                issues_str = ', '.join(issues)
+            else:
+                issues_str = str(issues)
+            
+            dept_details = f"<span style='color:#9f0bfb'>• {dept_display}</span>: {issues_str}"
+        
         st.markdown(
-            f"""
+            f'''
             <div class="card">
-            <h4 style="font-family:'Playfair Display', serif;"><strong>Complaint Number:</strong> {complaint['cno']}<h4>
-            <p>Train Number: {complaint['train_number']}<br>
-            Department:  {complaint['department']}<br>
-            <strong>Complaint Registered:</strong> {complaint['complaint_registered']}</p>
-            <p class="issues"><strong>Issues:</strong> {complaint['issues']}</p>
+                <h4 style="font-family:'Playfair Display', serif">
+                    <strong>Complaint Number:</strong> {complaint['cno']}
+                </h4>
+                <p>
+                    <strong>Train Number:</strong> {complaint['train_number']}<br>
+                    <strong>Department(s):</strong> {dept_display}<br>
+                    <strong>Registered:</strong> {complaint['complaint_registered']}
+                </p>
+                <p><strong>Details:</strong><br>
+                {dept_details}</p>
             </div>
-            """,
+            ''',
             unsafe_allow_html=True
         )
     
@@ -171,18 +238,135 @@ elif page == "Complaint Lodger":
         if submit_button:
             st.success("Your complaint has been successfully submitted.")
             if len(complaint) > 0:
-                inputs = {"complaint": complaint, "departments": departments}
+                inputs = {"complaint": complaint, "departments": departments, "issue_department_mapping": issue_department_mapping}
                 crew_output = crew.kickoff(inputs = inputs)
-                st.write(crew_output.raw)
-                cno = generate_unique_id()
-                log = {
-                    'train_number': str(train_number),
-                    'date_of_problem': str(date),
-                    'complaint_registered': str(date.today().strftime("%d/%m/%Y")),
-                    'cno': cno,
-                    'mail':str(mail),
-                    'department':eval(crew_output.tasks_output[1].raw.replace("[", "{").replace("]", "}").replace("'", '"'))['department'],
-                    'issues': crew_output.tasks_output[0].raw.strip("```json\n").strip("```").replace("\"", "'").replace("\\", "").replace("\n", "")
+                
+                # Extract issues from Task 1 (Complaint Analysis)
+                issues_raw = crew_output.tasks_output[0].raw.strip("```json\n").strip("```").replace("\"", "'").replace("\\", "").replace("\n", "")
+                
+                # Extract department routing with sub-complaints from Task 2
+                try:
+                    # Parse the multi-department assignment with complaint texts
+                    dept_routing_raw = crew_output.tasks_output[1].raw
+                    
+                    # Remove markdown code blocks
+                    if '```json' in dept_routing_raw:
+                        # Extract content between ```json and ```
+                        start_marker = '```json'
+                        end_marker = '```'
+                        start_idx = dept_routing_raw.find(start_marker) + len(start_marker)
+                        end_idx = dept_routing_raw.rfind(end_marker)
+                        if end_idx > start_idx:
+                            dept_routing_cleaned = dept_routing_raw[start_idx:end_idx].strip()
+                        else:
+                            dept_routing_cleaned = dept_routing_raw
+                    else:
+                        dept_routing_cleaned = dept_routing_raw.strip()
+                    
+                    # Find JSON array boundaries (handle any extra text)
+                    if '[' in dept_routing_cleaned and ']' in dept_routing_cleaned:
+                        start_idx = dept_routing_cleaned.index('[')
+                        end_idx = dept_routing_cleaned.rindex(']') + 1
+                        dept_routing_cleaned = dept_routing_cleaned[start_idx:end_idx]
+                    
+                    # Try to handle JSON with literal newlines in string values
+                    # First, try normal parsing
+                    try:
+                        dept_assignments = json.loads(dept_routing_cleaned)
+                    except json.JSONDecodeError:
+                        # If that fails, try replacing literal newlines with spaces
+                        # Simple approach: join lines that look like string content
+                        import io
+                        cleaned_json = ""
+                        in_string = False
+                        i = 0
+                        while i < len(dept_routing_cleaned):
+                            char = dept_routing_cleaned[i]
+                            if char == '"' and dept_routing_cleaned[max(0, i-1)] != '\\':
+                                in_string = not in_string
+                            elif char == '\n' and in_string:
+                                cleaned_json += ' '  # Replace newlines in strings with spaces
+                            else:
+                                cleaned_json += char
+                            i += 1
+                        
+                        dept_assignments = json.loads(cleaned_json)
+                    
+                    # Ensure it's a list
+                    if not isinstance(dept_assignments, list):
+                        dept_assignments = [dept_assignments]
+                    
+                except (json.JSONDecodeError, KeyError, IndexError) as e:
+                    st.warning(f"Parsing error, attempting alternative approach: {e}")
+                    
+                    # Try to extract just the department names as fallback
+                    try:
+                        # Simple fallback: extract department names from the raw output
+                        dept_pattern = r'"department"\s*:\s*"([^"]+)"'
+                        departments_found = re.findall(dept_pattern, dept_routing_raw)
+                        
+                        if departments_found:
+                            dept_assignments = []
+                            for dept_name in departments_found:
+                                dept_assignments.append({
+                                    "department": dept_name,
+                                    "complaint_text": complaint,  # Use original complaint as fallback
+                                    "issues": [issues_raw],
+                                    "priority_suggestion": 3,
+                                    "reasoning": "Parsed from agent output"
+                                })
+                        else:
+                            raise ValueError("No departments found")
+                    except:
+                        # Ultimate fallback: single department
+                        dept_assignments = [{
+                            "department": "Commercial",
+                            "complaint_text": complaint,
+                            "issues": [issues_raw],
+                            "priority_suggestion": 3,
+                            "reasoning": "Default assignment due to parsing error"
+                        }]
+                    
+                    st.info("Using fallback parsing method.")
+                
+                # Generate master complaint number
+                master_cno = generate_unique_id()
+                
+                # Original complaint data
+                original_data = {
+                    "original_cno": master_cno,
+                    "train_number": str(train_number),
+                    "date_of_problem": str(date),
+                    "complaint_registered": str(date.today().strftime("%d/%m/%Y")),
+                    "mail": str(mail)
                 }
-                st.success(f'Your Complaint No. is: **{cno}**, use it to access your complaint status.')
-                logger(log)
+                
+                # Create sub-complaints for each department
+                sub_complaints = create_sub_complaints(original_data, dept_assignments)
+                
+                # Log each sub-complaint separately
+                for sub_complaint in sub_complaints:
+                    logger(sub_complaint)
+                
+                # Display to user
+                st.success(f"✅ Complaint No: **{master_cno}**")
+                st.info(f"📋 Created **{len(sub_complaints)}** department-specific entries (ALL share the same Complaint No)")
+                
+                # Show each sub-complaint
+                with st.expander("📊 Department-Wise Entries", expanded=True):
+                    st.write(f"**📌 All entries share Complaint No: {master_cno}**")
+                    st.write("---")
+                    for idx, sub in enumerate(sub_complaints, 1):
+                        st.markdown(f"### {idx}. {sub['department']} Department")
+                        st.write(f"**Priority:** {sub['priority']}")
+                        if isinstance(sub['issues'], list):
+                            st.write(f"**Issues:** {', '.join(sub['issues'])}")
+                        else:
+                            st.write(f"**Issues:** {sub['issues']}")
+                        st.write(f"**Complaint Text:**")
+                        st.info(sub['complaint_text'] if sub.get('complaint_text') else 'No specific complaint text provided.')
+                        st.write("")
+                
+                # Show full AI response (Task 3/4 - Response letter)
+                with st.expander("📧 Full Response Letter", expanded=False):
+                    st.write(crew_output.raw)
